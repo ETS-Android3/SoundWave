@@ -1,2 +1,2 @@
 # ProjectLogin
-eisai malakas revol thnx! asdasd
+eisai malakas revol thnx!
