@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
 
     Button btnLogOut;
     FirebaseAuth mAuth;
-    SimpleExoPlayer exoPlayerView;
+    SimpleExoPlayer simpleExoPlayer;
     PlayerView playerView;
     String songUrl = "https://firebasestorage.googleapis.com/v0/b/projectlogin-c32ae.appspot.com/o/Rick%20Astley%20-%20Never%20Gonna%20Give%20You%20Up.mp3?alt=media&token=c81d934f-5206-41c4-a25c-433494bcc96d";
 
@@ -42,11 +42,15 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void releasePlayer() {
+        simpleExoPlayer.stop();
+    }
+
     public void initPlayer(){
         playerView = findViewById(R.id.playerView);
         playerView.setControllerShowTimeoutMs(0);
         playerView.setCameraDistance(30);
-        SimpleExoPlayer simpleExoPlayer = new SimpleExoPlayer.Builder(this).build();
+        simpleExoPlayer = new SimpleExoPlayer.Builder(this).build();
         playerView.setPlayer(simpleExoPlayer);
         DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(this,
                 Util.getUserAgent(this,"app"));
@@ -55,12 +59,7 @@ public class MainActivity extends AppCompatActivity {
         simpleExoPlayer.setPlayWhenReady(true);
     }
 
-    public void releasePlayer(){
-        SimpleExoPlayer simpleExoPlayer = new SimpleExoPlayer.Builder(this).build();
-        simpleExoPlayer.setPlayWhenReady(false);
-        simpleExoPlayer.stop();
-        simpleExoPlayer.seekTo(0);
-    }
+
 
     @Override
     protected void onStart() {
