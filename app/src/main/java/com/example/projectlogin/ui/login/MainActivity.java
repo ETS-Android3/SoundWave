@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         btnLogOut.setOnClickListener(view ->{
+            releasePlayer();
             mAuth.signOut();
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
         });
@@ -52,6 +53,13 @@ public class MainActivity extends AppCompatActivity {
         MediaSource audiosource = new ProgressiveMediaSource.Factory(dataSourceFactory).createMediaSource(Uri.parse("https://firebasestorage.googleapis.com/v0/b/projectlogin-c32ae.appspot.com/o/Rick%20Astley%20-%20Never%20Gonna%20Give%20You%20Up.mp3?alt=media&token=c81d934f-5206-41c4-a25c-433494bcc96d"));
         simpleExoPlayer.prepare(audiosource);
         simpleExoPlayer.setPlayWhenReady(true);
+    }
+
+    public void releasePlayer(){
+        SimpleExoPlayer simpleExoPlayer = new SimpleExoPlayer.Builder(this).build();
+        simpleExoPlayer.setPlayWhenReady(false);
+        simpleExoPlayer.stop();
+        simpleExoPlayer.seekTo(0);
     }
 
     @Override
