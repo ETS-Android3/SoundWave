@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Welcome, You are logged in "
-        android:textSize="12sp"
+        android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -30,33 +30,22 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
-<!--    <com.google.android.exoplayer2.ui.StyledPlayerView-->
-<!--        android:id="@+id/playerView"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.498"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/btnLogout"-->
-<!--        />-->
+    <ImageView
+        android:id="@+id/AlbumImage"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:layout_marginTop="50dp"
+        android:scaleType="center"
+        android:src="@drawable/rickroll"
+        app:layout_constraintTop_toBottomOf="@+id/btnLogout" />
     <com.google.android.exoplayer2.ui.PlayerView
         android:id="@+id/playerView"
-        android:layout_width="350dp"
-        android:layout_height="500dp"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnLogout"
+        app:layout_constraintTop_toBottomOf="@+id/AlbumImage"
         />
-
-    <Button
-        android:id="@+id/btnPlaySong"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="616dp"
-        android:text="Play Song"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

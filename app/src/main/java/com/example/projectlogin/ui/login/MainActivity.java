@@ -20,7 +20,6 @@ import java.io.IOException;
 public class MainActivity extends AppCompatActivity {
 
     Button btnLogOut;
-    Button btnPlaySong;
     FirebaseAuth mAuth;
     SimpleExoPlayer exoPlayerView;
     PlayerView playerView;
@@ -33,7 +32,6 @@ public class MainActivity extends AppCompatActivity {
         initPlayer();
 
         btnLogOut = findViewById(R.id.btnLogout);
-        btnPlaySong = findViewById(R.id.btnPlaySong);
         mAuth = FirebaseAuth.getInstance();
 
         btnLogOut.setOnClickListener(view ->{
