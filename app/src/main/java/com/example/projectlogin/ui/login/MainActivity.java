@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.widget.Button;
 import com.example.projectlogin.R;
 import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.ProgressiveMediaSource;
 import com.google.android.exoplayer2.ui.PlayerView;
@@ -52,9 +53,11 @@ public class MainActivity extends AppCompatActivity {
         playerView.setCameraDistance(30);
         simpleExoPlayer = new SimpleExoPlayer.Builder(this).build();
         playerView.setPlayer(simpleExoPlayer);
+        DefaultExtractorsFactory extractorsFactory =
+                new DefaultExtractorsFactory().setConstantBitrateSeekingEnabled(true);
         DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(this,
                 Util.getUserAgent(this,"app"));
-        MediaSource audiosource = new ProgressiveMediaSource.Factory(dataSourceFactory).createMediaSource(Uri.parse("https://firebasestorage.googleapis.com/v0/b/projectlogin-c32ae.appspot.com/o/Rick%20Astley%20-%20Never%20Gonna%20Give%20You%20Up.mp3?alt=media&token=c81d934f-5206-41c4-a25c-433494bcc96d"));
+        MediaSource audiosource = new ProgressiveMediaSource.Factory(dataSourceFactory, extractorsFactory).createMediaSource(Uri.parse("https://stream-server-youtube.herokuapp.com/dQw4w9WgXcQ"));
         simpleExoPlayer.prepare(audiosource);
         simpleExoPlayer.setPlayWhenReady(true);
     }
