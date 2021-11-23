@@ -60,7 +60,6 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
         });
 
-        });
         mAuth = FirebaseAuth.getInstance();
 
     }
