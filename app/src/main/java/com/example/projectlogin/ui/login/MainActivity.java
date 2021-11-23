@@ -35,6 +35,8 @@ public class MainActivity<usernameString> extends AppCompatActivity {
     SimpleExoPlayer simpleExoPlayer;
     PlayerView playerView;
     String songUrl = "https://firebasestorage.googleapis.com/v0/b/projectlogin-c32ae.appspot.com/o/Rick%20Astley%20-%20Never%20Gonna%20Give%20You%20Up.mp3?alt=media&token=c81d934f-5206-41c4-a25c-433494bcc96d";
+    ImageView imageProfile;
+    TextView profileName,profileStatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +65,7 @@ public class MainActivity<usernameString> extends AppCompatActivity {
         //NavigationView navigationView = findViewById(R.id.navigationView);
         //navigationView.setItemIconTintList(null);
 
+        imageProfile = findViewById(R.id.imageProfile);
 
     }
 
@@ -95,4 +98,15 @@ public class MainActivity<usernameString> extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1000) {
+            if (resultCode == Activity.RESULT_OK) {
+                Uri imageUri = data.getData();
+                imageProfile.setImageURI(imageUri);
+            }
+        }
+
+    }
 }
