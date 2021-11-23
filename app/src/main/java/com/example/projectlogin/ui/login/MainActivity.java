@@ -30,7 +30,6 @@ import java.io.IOException;
 public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
 
 
-    Button btnLogOut;
     FirebaseAuth mAuth;
     SimpleExoPlayer simpleExoPlayer;
     PlayerView playerView;
@@ -50,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
                 popup.inflate(R.menu.menu_example);
                 popup.show();
             }
+
         });
         btnLogOut = findViewById(R.id.btnLogout);
         mAuth = FirebaseAuth.getInstance();
@@ -59,26 +59,30 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
             mAuth.signOut();
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
         });
+
+        });
+        mAuth = FirebaseAuth.getInstance();
+
     }
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        Toast.makeText(this, "Selected Item: " + item.getTitle(), Toast.LENGTH_SHORT).show();
         switch (item.getItemId()) {
             case R.id.profile:
                 startActivity(new Intent(MainActivity.this, ProfileActivity.class));
                 releasePlayer();
-            case R.id.settings:
-
+                return true;
+            case R.id.idBtnSettings:
+                startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+                releasePlayer();
                 return true;
             case R.id.logout:
-                mAuth = FirebaseAuth.getInstance();
+                FirebaseAuth.getInstance().signOut();
                 releasePlayer();
-                mAuth.signOut();
                 startActivity(new Intent(MainActivity.this, LoginActivity.class));
                 return true;
             default:
-                return false;
+                return true;
         }
     }
 
