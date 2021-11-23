@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -12,15 +13,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/white"
-        android:text="Welcome, You are logged in "
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.527"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.022" />
+        app:layout_constraintVertical_bias="0.074" />
 
     <Button
         android:id="@+id/btnLogout"
@@ -33,6 +33,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
+
     <androidx.cardview.widget.CardView
         android:layout_width="320dp"
         android:layout_height="320dp"
@@ -43,16 +44,16 @@
         android:layout_centerHorizontal="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnLogout">
-    <androidx.cardview.widget.CardView
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        android:elevation="12dp"
-        app:cardCornerRadius="600dp"
-        android:layout_gravity="center"
-        android:layout_centerHorizontal="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/spinner2">
+        <androidx.cardview.widget.CardView
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:elevation="12dp"
+            app:cardCornerRadius="600dp"
+            android:layout_gravity="center"
+            android:layout_centerHorizontal="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
             <ImageView
                 android:id="@+id/AlbumImage"
                 android:layout_width="match_parent"
@@ -60,7 +61,7 @@
                 android:scaleType="center"
                 android:src="@drawable/rickroll"
                 />
-    </androidx.cardview.widget.CardView>
+        </androidx.cardview.widget.CardView>
     </androidx.cardview.widget.CardView>
 
     <com.google.android.exoplayer2.ui.PlayerView
@@ -76,5 +77,30 @@
         app:controller_layout_id="@layout/exo_playback_control_view"
         app:layout_constraintTop_toBottomOf="@+id/AlbumImageCardView"
         />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/spinner2"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="40dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="600dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.939"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints">
+
+        <ImageButton
+            android:id="@+id/btnShow"
+            style="@android:style/Widget.Spinner"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_gravity="center"
+            android:background="@drawable/myaccount"
+            android:dropDownWidth="200dp"
+            android:gravity="center"
+            android:onClick="showPopup"></ImageButton>
+    </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

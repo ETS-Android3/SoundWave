@@ -3,7 +3,16 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.PopupMenu;
+import android.widget.Toast;
+
 import com.example.projectlogin.R;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
@@ -18,7 +27,8 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.io.IOException;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
+
 
     Button btnLogOut;
     FirebaseAuth mAuth;
@@ -31,17 +41,48 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initPlayer();
-
+        ImageButton btn = (ImageButton) findViewById(R.id.btnShow);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupMenu popup = new PopupMenu(MainActivity.this, v);
+                popup.setOnMenuItemClickListener(MainActivity.this);
+                popup.inflate(R.menu.menu_example);
+                popup.show();
+            }
+        });
         btnLogOut = findViewById(R.id.btnLogout);
         mAuth = FirebaseAuth.getInstance();
 
-        btnLogOut.setOnClickListener(view ->{
+        btnLogOut.setOnClickListener(view -> {
             releasePlayer();
             mAuth.signOut();
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
         });
-
     }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        Toast.makeText(this, "Selected Item: " + item.getTitle(), Toast.LENGTH_SHORT).show();
+        switch (item.getItemId()) {
+            case R.id.profile:
+                startActivity(new Intent(MainActivity.this, ProfileActivity.class));
+                releasePlayer();
+            case R.id.settings:
+
+                return true;
+            case R.id.logout:
+                mAuth = FirebaseAuth.getInstance();
+                releasePlayer();
+                mAuth.signOut();
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                return true;
+            default:
+                return false;
+        }
+    }
+
+
 
     private void releasePlayer() {
         simpleExoPlayer.stop();
@@ -63,8 +104,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     @Override
+
     protected void onStart() {
         super.onStart();
         FirebaseUser user = mAuth.getCurrentUser();
