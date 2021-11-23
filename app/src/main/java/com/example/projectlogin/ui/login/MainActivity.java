@@ -51,14 +51,6 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
             }
 
         });
-        btnLogOut = findViewById(R.id.btnLogout);
-        mAuth = FirebaseAuth.getInstance();
-
-        btnLogOut.setOnClickListener(view -> {
-            releasePlayer();
-            mAuth.signOut();
-            startActivity(new Intent(MainActivity.this, LoginActivity.class));
-        });
 
         mAuth = FirebaseAuth.getInstance();
 
