@@ -14,6 +14,7 @@ import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import com.example.projectlogin.R;
+import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.source.MediaSource;
@@ -22,10 +23,12 @@ import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.google.common.collect.ImmutableList;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.io.IOException;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
 
@@ -61,11 +64,11 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         switch (item.getItemId()) {
             case R.id.profile:
                 startActivity(new Intent(MainActivity.this, ProfileActivity.class));
-                releasePlayer();
+                //releasePlayer();
                 return true;
             case R.id.idBtnSettings:
                 startActivity(new Intent(MainActivity.this, SettingsActivity.class));
-                releasePlayer();
+                //releasePlayer();
                 return true;
             case R.id.logout:
                 FirebaseAuth.getInstance().signOut();
@@ -84,6 +87,9 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     }
 
     public void initPlayer(){
+        List<MediaItem> newItems = ImmutableList.of(
+                MediaItem.fromUri(Uri.parse("https://stream-server-youtube.herokuapp.com/dQw4w9WgXcQ")),
+                MediaItem.fromUri(Uri.parse("https://stream-server-youtube.herokuapp.com/ojULkWEUsPs")));
         playerView = findViewById(R.id.playerView);
         playerView.setControllerShowTimeoutMs(0);
         playerView.setCameraDistance(30);
@@ -93,8 +99,9 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
                 new DefaultExtractorsFactory().setConstantBitrateSeekingEnabled(true);
         DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(this,
                 Util.getUserAgent(this,"app"));
-        MediaSource audiosource = new ProgressiveMediaSource.Factory(dataSourceFactory, extractorsFactory).createMediaSource(Uri.parse("https://stream-server-youtube.herokuapp.com/dQw4w9WgXcQ"));
-        simpleExoPlayer.prepare(audiosource);
+        //MediaSource audiosource = new ProgressiveMediaSource.Factory(dataSourceFactory, extractorsFactory).createMediaSource(Uri.parse("https://stream-server-youtube.herokuapp.com/dQw4w9WgXcQ"));
+        simpleExoPlayer.setMediaItems(newItems,true);
+        simpleExoPlayer.prepare();
         simpleExoPlayer.setPlayWhenReady(true);
     }
 
