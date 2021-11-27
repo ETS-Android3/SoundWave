@@ -34,14 +34,24 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
 
 
     FirebaseAuth mAuth;
-    SimpleExoPlayer simpleExoPlayer;
+    public static SimpleExoPlayer simpleExoPlayer;
     PlayerView playerView;
     String songUrl = "https://firebasestorage.googleapis.com/v0/b/projectlogin-c32ae.appspot.com/o/Rick%20Astley%20-%20Never%20Gonna%20Give%20You%20Up.mp3?alt=media&token=c81d934f-5206-41c4-a25c-433494bcc96d";
-
+    String songId;
+    String url;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Intent intent = this.getIntent();
+        if (intent != null) {
+
+            String track = intent.getStringExtra("track");
+            String artist = intent.getStringExtra("artist");
+            String thumbnail = intent.getStringExtra("thumbnail");
+            songId = intent.getStringExtra("id");
+        }
+        url = ("https://stream-server-youtube.herokuapp.com/"+songId);
         initPlayer();
         ImageButton btn = (ImageButton) findViewById(R.id.btnShow);
         btn.setOnClickListener(new View.OnClickListener() {
@@ -79,26 +89,26 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
                 return true;
         }
     }
-
-
-
-    private void releasePlayer() {
-        simpleExoPlayer.stop();
+    public static void releasePlayer() {
+        if (simpleExoPlayer != null) {
+            simpleExoPlayer.setPlayWhenReady(false);
+            simpleExoPlayer.stop();
+            simpleExoPlayer.seekTo(0);
+        }
     }
 
     public void initPlayer(){
         List<MediaItem> newItems = ImmutableList.of(
-                MediaItem.fromUri(Uri.parse("https://stream-server-youtube.herokuapp.com/dQw4w9WgXcQ")),
-                MediaItem.fromUri(Uri.parse("https://stream-server-youtube.herokuapp.com/ojULkWEUsPs")));
+                MediaItem.fromUri(Uri.parse(url)));
         playerView = findViewById(R.id.playerView);
         playerView.setControllerShowTimeoutMs(0);
         playerView.setCameraDistance(30);
         simpleExoPlayer = new SimpleExoPlayer.Builder(this).build();
         playerView.setPlayer(simpleExoPlayer);
-        DefaultExtractorsFactory extractorsFactory =
-                new DefaultExtractorsFactory().setConstantBitrateSeekingEnabled(true);
-        DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(this,
-                Util.getUserAgent(this,"app"));
+//        DefaultExtractorsFactory extractorsFactory =
+//                new DefaultExtractorsFactory().setConstantBitrateSeekingEnabled(true);
+//        DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(this,
+//                Util.getUserAgent(this,"app"));
         //MediaSource audiosource = new ProgressiveMediaSource.Factory(dataSourceFactory, extractorsFactory).createMediaSource(Uri.parse("https://stream-server-youtube.herokuapp.com/dQw4w9WgXcQ"));
         simpleExoPlayer.setMediaItems(newItems,true);
         simpleExoPlayer.prepare();
