@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.projectlogin.R;
+import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
 
@@ -45,6 +46,7 @@ public class ListAdapter extends ArrayAdapter<Song> {
 //        imageView.;
         userName.setText(song.name);
         lastMsg.setText(song.lastMessage);
+        Picasso.get().load(song.imageId).placeholder(R.drawable.missingbackground).error(R.drawable.missingbackground).fit().centerCrop().into(imageView);
 
 
         return convertView;

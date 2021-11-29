@@ -387,13 +387,16 @@ public class FetchDataTest extends AppCompatActivity {
                         String id = dataFinal.getString("id");
                         String name = jsonObject.getString("name");
                         String thumbnail = jsonObject.getString("artistThumbnail");
+                        JSONArray songThumb = dataFinal.getJSONArray("thumbnail");
+                        JSONObject songThumbnail = songThumb.getJSONObject(0);
+                        String songThumbnailFinal = songThumbnail.getString("url");
                         trackList.add(trackName);
                         songId.add(id);
                         artistName.add(name);
                         artistThumbnailUrl.add(thumbnail);
                         thumbnailUrl.add("");
                         for(int l = 0; l<1;l++){
-                            Song song = new Song(trackName,name,id,"Greece","");
+                            Song song = new Song(trackName,name,id,"Greece",songThumbnailFinal);
                             songArrayList.add(song);
                             artistThumbnailUrl.add(thumbnail);
                             Log.d("Song:",song.name);
@@ -401,6 +404,7 @@ public class FetchDataTest extends AppCompatActivity {
                         Log.d("Track Name:",trackName);
                         Log.d("ID:",id);
                         Log.d("artistURL:",artistThumbnailUrl.get(0));
+                        Log.d("SONGTHUMBNAIL", songThumbnailFinal);
                     }
                     Handler uiHandler = new Handler(Looper.getMainLooper());
                     uiHandler.post(new Runnable(){
