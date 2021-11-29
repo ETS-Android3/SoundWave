@@ -4,17 +4,20 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.projectlogin.R;
 import com.example.projectlogin.databinding.ActivityMainBinding;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,20 +44,23 @@ public class FetchDataTest extends AppCompatActivity {
     ArrayList<String> trackList;
     ArrayList<String> artistName;
     ArrayList<String> thumbnailUrl;
+    ArrayList<String> artistThumbnailUrl;
     ArrayList<String> songId;
     ListAdapter listAdapter;
     ArrayList<Song> songArrayList;
     Handler mainHandler = new Handler();
     ProgressDialog progressDialog;
+    ImageView imageView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.api_json_test);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
+        imageView = findViewById(R.id.Image);
         initializeDataList();
         new fetchData().start();
-
     }
 
     private void initializeDataList() {
@@ -62,8 +68,10 @@ public class FetchDataTest extends AppCompatActivity {
         trackList = new ArrayList<String>();
         artistName = new ArrayList<String>();
         thumbnailUrl = new ArrayList<String>();
+        artistThumbnailUrl = new ArrayList<String>();
         songId = new ArrayList<String>();
         songArrayList = new ArrayList<>();
+
 
         listAdapter = new ListAdapter(this, songArrayList);
         listView.setAdapter(listAdapter);
@@ -80,6 +88,7 @@ public class FetchDataTest extends AppCompatActivity {
                 MainActivity.releasePlayer();
             }
         });
+        //Log.d("PICASSO", songId.get(0));
     }
 
     class fetchData extends  Thread {
@@ -348,7 +357,7 @@ public class FetchDataTest extends AppCompatActivity {
             });
 
             try {
-                URL url = new URL("https://yma-server.herokuapp.com/artist/Busta%20Rhymes");
+                URL url = new URL("https://yma-server.herokuapp.com/artist/Eminem");
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                 InputStream inputStream = httpURLConnection.getInputStream();
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
@@ -368,6 +377,7 @@ public class FetchDataTest extends AppCompatActivity {
                     songId.clear();
                     artistName.clear();
                     thumbnailUrl.clear();
+                    artistThumbnailUrl.clear();
 
                     for (int i =0; i< data.length(); i++){
                         JSONObject dataFinal = data.getJSONObject(i);
@@ -376,18 +386,29 @@ public class FetchDataTest extends AppCompatActivity {
                         String trackName = tracks.getString("text");
                         String id = dataFinal.getString("id");
                         String name = jsonObject.getString("name");
+                        String thumbnail = jsonObject.getString("artistThumbnail");
                         trackList.add(trackName);
                         songId.add(id);
                         artistName.add(name);
+                        artistThumbnailUrl.add(thumbnail);
                         thumbnailUrl.add("");
                         for(int l = 0; l<1;l++){
                             Song song = new Song(trackName,name,id,"Greece","");
                             songArrayList.add(song);
+                            artistThumbnailUrl.add(thumbnail);
                             Log.d("Song:",song.name);
                         }
                         Log.d("Track Name:",trackName);
                         Log.d("ID:",id);
+                        Log.d("artistURL:",artistThumbnailUrl.get(0));
                     }
+                    Handler uiHandler = new Handler(Looper.getMainLooper());
+                    uiHandler.post(new Runnable(){
+                        @Override
+                        public void run() {
+                    Picasso.get().load(artistThumbnailUrl.get(0)).placeholder(R.drawable.missingbackground).error(R.drawable.missingbackground).fit().centerCrop().into(imageView);
+                        }
+                    });
                 }
 
             } catch (MalformedURLException e) {

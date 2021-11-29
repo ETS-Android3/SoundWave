@@ -4,29 +4,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginHorizontal="16dp"
+    android:background="#121212"
     tools:context=".ui.login.FetchDataTest">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="250sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/TextViewTest"
+        android:id="@+id/Image"
+        />
 
     <TextView
+        android:id="@+id/TextViewTest"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="Busta Rhymes"
+        android:layout_marginHorizontal="16dp"
+        android:textColor="@color/white"
+        android:text="Eminem"
         android:textSize="30dp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:id="@+id/TextViewTest"
-        />
+        app:layout_constraintTop_toBottomOf="@id/Image" />
 
     <ListView
         android:id="@+id/dataList"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        tools:listitem="@layout/list_adapter_song"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TextViewTest"/>
+        app:layout_constraintTop_toBottomOf="@+id/TextViewTest"
+        tools:listitem="@layout/list_adapter_song" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
