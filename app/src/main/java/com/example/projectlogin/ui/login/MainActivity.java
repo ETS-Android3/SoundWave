@@ -1,8 +1,13 @@
 package com.example.projectlogin.ui.login;
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -10,7 +15,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.projectlogin.R;
@@ -39,6 +46,9 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     String songUrl = "https://firebasestorage.googleapis.com/v0/b/projectlogin-c32ae.appspot.com/o/Rick%20Astley%20-%20Never%20Gonna%20Give%20You%20Up.mp3?alt=media&token=c81d934f-5206-41c4-a25c-433494bcc96d";
     String songId;
     String url;
+    ImageView imageProfile;
+    TextView profileName,profileStatus;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +77,14 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
 
         mAuth = FirebaseAuth.getInstance();
 
+        final DrawerLayout drawerLayout = findViewById(R.id.drawerLayout);
+
+        findViewById(R.id.imageMenu).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawerLayout.openDrawer(GravityCompat.START);
+            }
+        });
     }
 
     @Override
@@ -124,5 +142,17 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         if (user == null){
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1000) {
+            if (resultCode == Activity.RESULT_OK) {
+                Uri imageUri = data.getData();
+                imageProfile.setImageURI(imageUri);
+            }
+        }
+
     }
 }

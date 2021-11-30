@@ -22,5 +22,12 @@
             <item>Enable Cookies</item>
             <item>Disable Cookies</item>
         </string-array>
-
+    <string name="name">David</string>
+    <string name="supporter">Supporter++</string>
+    <string name="home">Home</string>
+    <string name="others">Others</string>
+    <string name="search">Search</string>
+    <string name="ylibrary">Your Library</string>
+    <string name="cplaylist">Create A Playlist</string>
+    <string name="likedsongs">Liked Songs</string>
 </resources>
