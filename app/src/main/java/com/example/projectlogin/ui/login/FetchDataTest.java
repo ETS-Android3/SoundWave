@@ -8,7 +8,6 @@ import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -32,7 +31,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -394,7 +392,7 @@ public class FetchDataTest extends AppCompatActivity {
                         songId.add(id);
                         artistName.add(name);
                         artistThumbnailUrl.add(thumbnail);
-                        thumbnailUrl.add("");
+                        thumbnailUrl.add(songThumbnailFinal);
                         for(int l = 0; l<1;l++){
                             Song song = new Song(trackName,name,id,"Greece",songThumbnailFinal);
                             songArrayList.add(song);
