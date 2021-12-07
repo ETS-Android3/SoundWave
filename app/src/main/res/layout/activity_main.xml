@@ -76,7 +76,7 @@
         android:id="@+id/playerView"
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="100dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
@@ -85,6 +85,29 @@
         app:controller_layout_id="@layout/exo_playback_control_view"
         app:layout_constraintTop_toBottomOf="@+id/AlbumImageCardView"
         />
+
+    <TextView
+        android:id="@+id/songTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:text="Song Title"
+        android:paddingTop="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/AlbumImageCardView"
+        app:layout_constraintStart_toStartOf="@+id/AlbumImageCardView"/>
+
+    <TextView
+        android:id="@+id/songArtist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="italic"
+        android:text="Song Artist"
+        app:layout_constraintTop_toBottomOf="@+id/songTitle"
+        app:layout_constraintStart_toStartOf="@+id/AlbumImageCardView"/>
 
     <androidx.cardview.widget.CardView
         android:id="@+id/spinner2"

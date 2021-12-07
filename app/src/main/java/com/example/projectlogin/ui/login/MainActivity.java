@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     ImageView imageProfile;
     ImageView albumImage;
     TextView profileName,profileStatus;
+    TextView songTitle, songArtist;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,12 +48,20 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         setContentView(R.layout.activity_main);
         albumImage = findViewById(R.id.AlbumImage);
         Intent intent = this.getIntent();
+        songTitle = findViewById (R.id.songTitle);
+        songArtist = findViewById (R.id.songArtist);
+        songArtist.setOnClickListener(view -> {
+            startActivity(new Intent(MainActivity.this,FetchDataTest.class));
+        });
+
         if (intent != null) {
             String track = intent.getStringExtra("track");
             String artist = intent.getStringExtra("artist");
             thumbnail = intent.getStringExtra("thumbnail");
             songId = intent.getStringExtra("id");
-            String replacedThumbnail = thumbnail.replaceAll("(=).*"," ");;
+            String replacedThumbnail = thumbnail.replaceAll("(=).*"," ");
+            songTitle.setText(track);
+            songArtist.setText(artist);
             Picasso.get().load(replacedThumbnail).placeholder(R.drawable.missingbackground).error(R.drawable.missingbackground).fit().centerCrop().into(albumImage);
         }
         url = ("https://stream-server-youtube.herokuapp.com/"+songId);

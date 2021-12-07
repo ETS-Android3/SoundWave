@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -355,7 +356,7 @@ public class FetchDataTest extends AppCompatActivity {
             });
 
             try {
-                URL url = new URL("https://yma-server.herokuapp.com/artist/Eminem");
+                URL url = new URL("https://yma-server.herokuapp.com/artist/LISA");
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                 InputStream inputStream = httpURLConnection.getInputStream();
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
@@ -399,6 +400,7 @@ public class FetchDataTest extends AppCompatActivity {
                             artistThumbnailUrl.add(thumbnail);
                             Log.d("Song:",song.name);
                         }
+
                         Log.d("Track Name:",trackName);
                         Log.d("ID:",id);
                         Log.d("artistURL:",artistThumbnailUrl.get(0));
@@ -409,6 +411,8 @@ public class FetchDataTest extends AppCompatActivity {
                         @Override
                         public void run() {
                     Picasso.get().load(artistThumbnailUrl.get(0)).placeholder(R.drawable.missingbackground).error(R.drawable.missingbackground).fit().centerCrop().into(imageView);
+                            TextView artist = findViewById(R.id.TextViewTest);
+                            artist.setText(artistName.get(0));
                         }
                     });
                 }
