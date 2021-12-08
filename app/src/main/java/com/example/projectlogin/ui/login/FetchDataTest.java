@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -87,7 +86,6 @@ public class FetchDataTest extends AppCompatActivity {
                 MainActivity.releasePlayer();
             }
         });
-        //Log.d("PICASSO", songId.get(0));
     }
 
     class fetchData extends  Thread {
@@ -382,7 +380,6 @@ public class FetchDataTest extends AppCompatActivity {
 
                         JSONObject dataFinal = data.getJSONObject(i);
                         JSONObject tracks = dataFinal.getJSONObject("title");
-                        //JSONArray tracksFinal = tracks.getJSONArray("text");
                         String trackName = tracks.getString("text");
                         String id = dataFinal.getString("id");
                         String name = jsonObject.getString("name");
@@ -400,13 +397,7 @@ public class FetchDataTest extends AppCompatActivity {
                             Song song = new Song(trackName, name, id, "Greece", songThumbnailFinal);
                             songArrayList.add(song);
                             artistThumbnailUrl.add(thumbnail);
-                            Log.d("Song:", song.name);
                         }
-
-                        Log.d("Track Name:", trackName);
-                        Log.d("ID:", id);
-                        Log.d("artistURL:", artistThumbnailUrl.get(0));
-                        Log.d("SONGTHUMBNAIL", songThumbnailFinal);
                     }
                     Handler uiHandler = new Handler(Looper.getMainLooper());
                     uiHandler.post(new Runnable() {

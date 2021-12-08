@@ -33,13 +33,11 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     FirebaseAuth mAuth;
     public static SimpleExoPlayer simpleExoPlayer;
     PlayerView playerView;
-    String songUrl = "https://firebasestorage.googleapis.com/v0/b/projectlogin-c32ae.appspot.com/o/Rick%20Astley%20-%20Never%20Gonna%20Give%20You%20Up.mp3?alt=media&token=c81d934f-5206-41c4-a25c-433494bcc96d";
     String songId;
     String thumbnail;
     String url;
     ImageView imageProfile;
     ImageView albumImage;
-    TextView profileName,profileStatus;
     TextView songTitle, songArtist;
 
     @Override
@@ -59,12 +57,10 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
             String artist = intent.getStringExtra("artist");
             thumbnail = intent.getStringExtra("thumbnail");
             songId = intent.getStringExtra("id");
-
             String replacedThumbnail = thumbnail.replaceAll("(=).*"," ");
             songTitle.setText(track);
             songArtist.setText(artist);
             Picasso.get().load(replacedThumbnail).placeholder(R.drawable.missingbackground).error(R.drawable.missingbackground).fit().centerCrop().into(albumImage);
-
         }
         url = ("https://stream-server-youtube.herokuapp.com/"+songId);
         initPlayer();
@@ -128,11 +124,6 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         playerView.setCameraDistance(30);
         simpleExoPlayer = new SimpleExoPlayer.Builder(this).build();
         playerView.setPlayer(simpleExoPlayer);
-//        DefaultExtractorsFactory extractorsFactory =
-//                new DefaultExtractorsFactory().setConstantBitrateSeekingEnabled(true);
-//        DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(this,
-//                Util.getUserAgent(this,"app"));
-        //MediaSource audiosource = new ProgressiveMediaSource.Factory(dataSourceFactory, extractorsFactory).createMediaSource(Uri.parse("https://stream-server-youtube.herokuapp.com/dQw4w9WgXcQ"));
         simpleExoPlayer.setMediaItems(newItems,true);
         simpleExoPlayer.prepare();
         simpleExoPlayer.setPlayWhenReady(true);
