@@ -4,38 +4,63 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginHorizontal="16dp">
+    android:background="#121212"
+    tools:context=".ui.login.FetchDataTest">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="250sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/TextViewTest"
+        android:id="@+id/Image"
+        />
 
     <TextView
+        android:id="@+id/TextViewTest"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="API TEST"
+        android:layout_marginHorizontal="16dp"
+        android:textColor="@color/white"
+        android:text="Eminem"
         android:textSize="30dp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:id="@+id/TextViewTest"
-        />
+        app:layout_constraintTop_toBottomOf="@id/Image" />
+
+    <TextView
+        android:id="@+id/TextViewTopSongs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:textColor="@color/white"
+        android:text="Popular Songs"
+        android:textSize="17dp"
+        android:paddingTop="15dp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/TextViewTest" />
 
     <ListView
         android:id="@+id/dataList"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/buttonFetch"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TextViewTest"/>
+        app:layout_constraintTop_toBottomOf="@+id/TextViewTopSongs"
+        tools:listitem="@layout/list_adapter_song" />
 
-    <Button
-        android:id="@+id/buttonFetch"
+    <TextView
+        android:id="@+id/TextViewAlbums"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Fetch"
-        android:layout_marginBottom="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        android:layout_marginHorizontal="16dp"
+        android:textColor="@color/white"
+        android:text="Albums"
+        android:textSize="17dp"
+        android:paddingTop="15dp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dataList" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
