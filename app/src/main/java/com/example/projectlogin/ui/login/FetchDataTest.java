@@ -362,11 +362,11 @@ public class FetchDataTest extends AppCompatActivity {
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
                 String line;
 
-                while((line = bufferedReader.readLine()) != null){
+                while ((line = bufferedReader.readLine()) != null) {
                     data = data + line;
                 }
 
-                if (!data.isEmpty()){
+                if (!data.isEmpty()) {
                     JSONObject jsonObject = new JSONObject(data);
                     String desc = jsonObject.getString("description");
                     JSONObject dataLong = jsonObject.getJSONObject("songs");
@@ -378,7 +378,7 @@ public class FetchDataTest extends AppCompatActivity {
                     thumbnailUrl.clear();
                     artistThumbnailUrl.clear();
 
-                    for (int i =0; i< data.length(); i++){
+                    for (int i = 0; i < data.length(); i++) {
                         JSONObject dataFinal = data.getJSONObject(i);
                         JSONObject tracks = dataFinal.getJSONObject("title");
                         //JSONArray tracksFinal = tracks.getJSONArray("text");
@@ -394,23 +394,23 @@ public class FetchDataTest extends AppCompatActivity {
                         artistName.add(name);
                         artistThumbnailUrl.add(thumbnail);
                         thumbnailUrl.add(songThumbnailFinal);
-                        for(int l = 0; l<1;l++){
-                            Song song = new Song(trackName,name,id,"Greece",songThumbnailFinal);
+                        for (int l = 0; l < 1; l++) {
+                            Song song = new Song(trackName, name, id, "Greece", songThumbnailFinal);
                             songArrayList.add(song);
                             artistThumbnailUrl.add(thumbnail);
-                            Log.d("Song:",song.name);
+                            Log.d("Song:", song.name);
                         }
 
-                        Log.d("Track Name:",trackName);
-                        Log.d("ID:",id);
-                        Log.d("artistURL:",artistThumbnailUrl.get(0));
+                        Log.d("Track Name:", trackName);
+                        Log.d("ID:", id);
+                        Log.d("artistURL:", artistThumbnailUrl.get(0));
                         Log.d("SONGTHUMBNAIL", songThumbnailFinal);
                     }
                     Handler uiHandler = new Handler(Looper.getMainLooper());
-                    uiHandler.post(new Runnable(){
+                    uiHandler.post(new Runnable() {
                         @Override
                         public void run() {
-                    Picasso.get().load(artistThumbnailUrl.get(0)).placeholder(R.drawable.missingbackground).error(R.drawable.missingbackground).fit().centerCrop().into(imageView);
+                            Picasso.get().load(artistThumbnailUrl.get(0)).placeholder(R.drawable.missingbackground).error(R.drawable.missingbackground).fit().centerCrop().into(imageView);
                             TextView artist = findViewById(R.id.TextViewTest);
                             artist.setText(artistName.get(0));
                         }
@@ -428,7 +428,7 @@ public class FetchDataTest extends AppCompatActivity {
             mainHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    if(progressDialog.isShowing())
+                    if (progressDialog.isShowing())
                         progressDialog.dismiss();
                     listAdapter.notifyDataSetChanged();
                 }
