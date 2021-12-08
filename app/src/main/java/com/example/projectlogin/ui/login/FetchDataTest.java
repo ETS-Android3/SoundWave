@@ -378,7 +378,8 @@ public class FetchDataTest extends AppCompatActivity {
                     thumbnailUrl.clear();
                     artistThumbnailUrl.clear();
 
-                    for (int i = 0; i < data.length(); i++) {
+                    for (int i =0; i< data.length(); i++){
+
                         JSONObject dataFinal = data.getJSONObject(i);
                         JSONObject tracks = dataFinal.getJSONObject("title");
                         //JSONArray tracksFinal = tracks.getJSONArray("text");
@@ -394,6 +395,7 @@ public class FetchDataTest extends AppCompatActivity {
                         artistName.add(name);
                         artistThumbnailUrl.add(thumbnail);
                         thumbnailUrl.add(songThumbnailFinal);
+
                         for (int l = 0; l < 1; l++) {
                             Song song = new Song(trackName, name, id, "Greece", songThumbnailFinal);
                             songArrayList.add(song);
@@ -411,6 +413,7 @@ public class FetchDataTest extends AppCompatActivity {
                         @Override
                         public void run() {
                             Picasso.get().load(artistThumbnailUrl.get(0)).placeholder(R.drawable.missingbackground).error(R.drawable.missingbackground).fit().centerCrop().into(imageView);
+
                             TextView artist = findViewById(R.id.TextViewTest);
                             artist.setText(artistName.get(0));
                         }

@@ -59,10 +59,12 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
             String artist = intent.getStringExtra("artist");
             thumbnail = intent.getStringExtra("thumbnail");
             songId = intent.getStringExtra("id");
-            String save = UrlClean.url(thumbnail);
+
+            String replacedThumbnail = thumbnail.replaceAll("(=).*"," ");
             songTitle.setText(track);
             songArtist.setText(artist);
-            Picasso.get().load(save).placeholder(R.drawable.missingbackground).error(R.drawable.missingbackground).fit().centerCrop().into(albumImage);
+            Picasso.get().load(replacedThumbnail).placeholder(R.drawable.missingbackground).error(R.drawable.missingbackground).fit().centerCrop().into(albumImage);
+
         }
         url = ("https://stream-server-youtube.herokuapp.com/"+songId);
         initPlayer();
@@ -160,4 +162,6 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     }
 
 }
+
+
 

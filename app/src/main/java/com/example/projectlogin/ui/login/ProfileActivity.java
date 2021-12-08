@@ -30,7 +30,7 @@ public class ProfileActivity  extends AppCompatActivity {
 
     ImageButton btnBackProfile;
     Button btnAvatar;
-    ImageView ImageAvatar;
+    ImageButton ImageAvatar;
     int SELECT_PICTURE = 200;
 
     @SuppressLint("WrongViewCast")
@@ -38,59 +38,56 @@ public class ProfileActivity  extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.profile_menu);
-        btnBackProfile = findViewById(R.id.btnBackProfile);
-        btnBackProfile.setOnClickListener(view ->{
-            startActivity(new Intent(ProfileActivity.this, MainActivity.class));
+
+
+
+
+
+
+
+
+
+        ImageAvatar = findViewById(R.id. ImageAvatar);
+        ImageAvatar = findViewById(R.id.ImageAvatar);
+
+
+        ImageAvatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imageChooser();
+            }
         });
+    }
 
 
+    void imageChooser() {
 
 
+        Intent i = new Intent();
+        i.setType("image/*");
+        i.setAction(Intent.ACTION_GET_CONTENT);
+
+        startActivityForResult(Intent.createChooser(i, "Select Picture"), SELECT_PICTURE);
+    }
 
 
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK) {
 
 
-            btnAvatar = findViewById(R.id. btnAvatar);
-            ImageAvatar = findViewById(R.id.ImageAvatar);
+            if (requestCode == SELECT_PICTURE) {
 
+                Uri selectedImageUri = data.getData();
+                if (null != selectedImageUri) {
 
-            btnAvatar.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        imageChooser();
-                    }
-                });
-            }
-
-
-            void imageChooser() {
-
-
-                Intent i = new Intent();
-                i.setType("image/*");
-                i.setAction(Intent.ACTION_GET_CONTENT);
-
-                startActivityForResult(Intent.createChooser(i, "Select Picture"), SELECT_PICTURE);
-            }
-
-
-            public void onActivityResult(int requestCode, int resultCode, Intent data) {
-                super.onActivityResult(requestCode, resultCode, data);
-
-                if (resultCode == RESULT_OK) {
-
-
-                    if (requestCode == SELECT_PICTURE) {
-
-                        Uri selectedImageUri = data.getData();
-                        if (null != selectedImageUri) {
-
-                            ImageAvatar.setImageURI(selectedImageUri);
-                        }
-                    }
+                    ImageAvatar.setImageURI(selectedImageUri);
                 }
             }
         }
+    }
+}
 
 
 
