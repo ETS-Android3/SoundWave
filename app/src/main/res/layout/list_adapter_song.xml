@@ -30,7 +30,7 @@
 
                 <TextView
                     android:id="@+id/personName"
-                    android:layout_width="wrap_content"
+                    android:layout_width="230dp"
                     android:layout_height="wrap_content"
                     android:text="Christopher"
                     android:textColor="@color/white"
@@ -47,7 +47,6 @@
 
             </LinearLayout>
 
-
         </LinearLayout>
 
 <!--        <TextView-->
@@ -57,8 +56,14 @@
 <!--            android:padding="15dp"-->
 <!--            android:layout_alignParentRight="true"-->
 <!--            android:text="8:35 pm"/>-->
-
-
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="350dp"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/heartliked"
+            android:id="@+id/like"
+            />
 
     </RelativeLayout>
 

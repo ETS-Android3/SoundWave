@@ -7,7 +7,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="#121212"
     tools:context=".ui.login.FetchDataTest">
 
@@ -54,25 +54,13 @@
     <ListView
         android:id="@+id/dataList"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
+        android:paddingBottom="318dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/TextViewTopSongs"
         tools:listitem="@layout/list_adapter_song" />
-
-    <TextView
-        android:id="@+id/TextViewAlbums"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:textColor="@color/white"
-        android:text="Albums"
-        android:textSize="17dp"
-        android:paddingTop="15dp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/dataList" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
