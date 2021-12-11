@@ -34,13 +34,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-public class FetchDataTest extends AppCompatActivity {
+public class PlaylistActivity extends AppCompatActivity {
 
     Button button;
     ListView listView;
     ActivityMainBinding binding;
     ArrayList<String> trackList;
     ArrayList<String> artistName;
+    ArrayList<String> playListName;
     ArrayList<String> thumbnailUrl;
     ArrayList<String> artistThumbnailUrl;
     ArrayList<String> songId;
@@ -55,7 +56,7 @@ public class FetchDataTest extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.api_json_test);
+        setContentView(R.layout.activity_playlist);
         Intent intent = this.getIntent();
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         imageView = findViewById(R.id.Image);
@@ -63,8 +64,8 @@ public class FetchDataTest extends AppCompatActivity {
         new fetchData().start();
 
         if (intent != null){
-            String artist = intent.getStringExtra("artist");
-            urlFinal = ("https://yma-server.herokuapp.com/artist/"+artist);
+            String playlistId = intent.getStringExtra("playlistUrl");
+            urlFinal = ("https://yma-server.herokuapp.com/playlist/"+playlistId);
         }
     }
 
@@ -74,6 +75,7 @@ public class FetchDataTest extends AppCompatActivity {
         artistName = new ArrayList<String>();
         thumbnailUrl = new ArrayList<String>();
         artistThumbnailUrl = new ArrayList<String>();
+        playListName = new ArrayList<String>();
         songId = new ArrayList<String>();
         songArrayList = new ArrayList<>();
 
@@ -84,7 +86,7 @@ public class FetchDataTest extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent,View view, int position, long id){
-                Intent i = new Intent(FetchDataTest.this, MainActivity.class);
+                Intent i = new Intent(PlaylistActivity.this, MainActivity.class);
                 i.putExtra("track", trackList.get(position));
                 i.putExtra("artist", artistName.get(position));
                 i.putExtra("thumbnail", thumbnailUrl.get(position));
@@ -353,7 +355,7 @@ public class FetchDataTest extends AppCompatActivity {
                             "Feeding unicorns...");
                     Random rand = new Random();
                     String randomElement = list.get(rand.nextInt(list.size()));
-                    progressDialog = new ProgressDialog(FetchDataTest.this);
+                    progressDialog = new ProgressDialog(PlaylistActivity.this);
                     progressDialog.setMessage(randomElement);
                     progressDialog.setCancelable(false);
                     progressDialog.show();
@@ -373,15 +375,17 @@ public class FetchDataTest extends AppCompatActivity {
 
                 if (!data.isEmpty()) {
                     JSONObject jsonObject = new JSONObject(data);
-                    String desc = jsonObject.getString("description");
-                    JSONObject dataLong = jsonObject.getJSONObject("songs");
-                    JSONArray data = dataLong.getJSONArray("results");
+                    //String desc = jsonObject.getString("description");
+                    JSONObject playListTitleLong = jsonObject.getJSONObject("title");
+                    //JSONObject dataLong = jsonObject.getJSONObject("content");
+                    JSONArray data = jsonObject.getJSONArray("content");
 
                     trackList.clear();
                     songId.clear();
                     artistName.clear();
                     thumbnailUrl.clear();
                     artistThumbnailUrl.clear();
+                    playListName.clear();
 
                     for (int i =0; i< data.length(); i++){
 
@@ -389,21 +393,29 @@ public class FetchDataTest extends AppCompatActivity {
                         JSONObject tracks = dataFinal.getJSONObject("title");
                         String trackName = tracks.getString("text");
                         String id = dataFinal.getString("id");
-                        String name = jsonObject.getString("name");
-                        String thumbnail = jsonObject.getString("artistThumbnail");
+                        JSONArray author = dataFinal.getJSONArray("author");
+                        JSONObject authorObject = author.getJSONObject(0);
+                        String name = authorObject.getString("text");
+                        String playListTitle = playListTitleLong.getString("text");
+                        JSONArray thumbnailArray = jsonObject.getJSONArray("thumbnail");
+                        JSONObject thumbnailObject = thumbnailArray.getJSONObject(0);
+                        String thumbnail = thumbnailObject.getString("url");
+                        String thumbnailFinal = UrlClean.url(thumbnail);
                         JSONArray songThumb = dataFinal.getJSONArray("thumbnail");
                         JSONObject songThumbnail = songThumb.getJSONObject(0);
-                        String songThumbnailFinal = songThumbnail.getString("url");
+                        String songThumbnailUrl = songThumbnail.getString("url");
+                        String songThumbnailFinal = UrlClean.url(songThumbnailUrl);
                         trackList.add(trackName);
                         songId.add(id);
                         artistName.add(name);
-                        artistThumbnailUrl.add(thumbnail);
+                        artistThumbnailUrl.add(thumbnailFinal);
                         thumbnailUrl.add(songThumbnailFinal);
+                        playListName.add(playListTitle);
 
                         for (int l = 0; l < 1; l++) {
                             Song song = new Song(trackName, name, id, "Greece", songThumbnailFinal);
                             songArrayList.add(song);
-                            artistThumbnailUrl.add(thumbnail);
+                            artistThumbnailUrl.add(thumbnailFinal);
                         }
                     }
                     Handler uiHandler = new Handler(Looper.getMainLooper());
@@ -412,8 +424,8 @@ public class FetchDataTest extends AppCompatActivity {
                         public void run() {
                             Picasso.get().load(artistThumbnailUrl.get(0)).placeholder(R.drawable.missingbackground).error(R.drawable.missingbackground).fit().centerCrop().into(imageView);
 
-                            TextView artist = findViewById(R.id.TextViewTest);
-                            artist.setText(artistName.get(0));
+                            TextView artist = findViewById(R.id.PlaylistTitle);
+                            artist.setText(playListName.get(0));
                         }
                     });
                 }

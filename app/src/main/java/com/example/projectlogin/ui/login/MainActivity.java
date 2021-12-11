@@ -48,9 +48,17 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         Intent intent = this.getIntent();
         songTitle = findViewById (R.id.songTitle);
         songArtist = findViewById (R.id.songArtist);
-        songArtist.setOnClickListener(view -> {
-            startActivity(new Intent(MainActivity.this,FetchDataTest.class));
+        songArtist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(MainActivity.this,FetchDataTest.class);
+                i.putExtra("artist",songArtist.getText().toString());
+                startActivity(i);
+            }
         });
+//        songArtist.setOnClickListener(view -> {
+//            startActivity(new Intent(MainActivity.this,FetchDataTest.class));
+//        });
 
         if (intent != null) {
             String track = intent.getStringExtra("track");
