@@ -85,10 +85,11 @@
                     android:textSize="13sp" />
 
                 <TextView
+                    android:id="@+id/Email"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
-                    android:text="nikoszannakis14@gmail.com"
+                    android:text=""
                     android:textColor="#FFFF"
                     android:textSize="18sp" />
 
@@ -114,10 +115,11 @@
                     android:textSize="13sp" />
 
                 <TextView
+                    android:id="@+id/Phone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
-                    android:text="+30-6978418507"
+                    android:text=""
                     android:textColor="#FFFF"
                     android:textSize="18sp" />
 
@@ -138,15 +140,16 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Instagram"
+                    android:text="Username"
                     android:textColor="@color/purple_200"
                     android:textSize="13sp" />
 
                 <TextView
+                    android:id="@+id/Username"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
-                    android:text="nikoszannakis14@gmail.com"
+                    android:text=""
                     android:textColor="#FFFF"
                     android:textSize="18sp" />
 
@@ -158,34 +161,34 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:orientation="vertical">
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="15dp"-->
+<!--                android:orientation="vertical">-->
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Facebook"
-                    android:textColor="@color/purple_200"
-                    android:textSize="13sp" />
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Facebook"-->
+<!--                    android:textColor="@color/purple_200"-->
+<!--                    android:textSize="13sp" />-->
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-light"
-                    android:text="nikoszannakis14@gmail.gr"
-                    android:textColor="#FFFF"
-                    android:textSize="18sp" />
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:fontFamily="sans-serif-light"-->
+<!--                    android:text="nikoszannakis14@gmail.gr"-->
+<!--                    android:textColor="#FFFF"-->
+<!--                    android:textSize="18sp" />-->
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="15dp"
-                    android:background="#FFFF" />
+<!--                <View-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="1dp"-->
+<!--                    android:layout_marginTop="15dp"-->
+<!--                    android:background="#FFFF" />-->
 
-            </LinearLayout>
+<!--            </LinearLayout>-->
 
 
         </LinearLayout>
