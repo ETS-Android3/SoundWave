@@ -1,18 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="ui.login.MainActivity">
     <item
         android:id="@+id/menuHome"
         android:icon="@drawable/ic_home"
         android:title="@string/home"
+        android:onClick="btnHome"
+
         />
     <item
         android:id="@+id/menuSearch"
         android:icon="@drawable/ic_search"
-        android:title="@string/search" />
+        android:title="@string/search"
+        android:onClick="btnSearch"/>
     <item
         android:id="@+id/menuYLibrary"
         android:icon="@drawable/libraryclone"
-        android:title="@string/ylibrary" />
+        android:title="@string/ylibrary"
+        android:onClick="btnYourlibrary"/>
 
     <item android:title="@string/others">
         <menu>
