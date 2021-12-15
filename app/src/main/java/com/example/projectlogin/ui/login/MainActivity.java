@@ -21,6 +21,7 @@ import com.example.projectlogin.R;
 import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.ui.PlayerView;
+import com.google.android.material.navigation.NavigationView;
 import com.google.common.collect.ImmutableList;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -102,12 +103,18 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
 
         final DrawerLayout drawerLayout = findViewById(R.id.drawerLayout);
 
+        NavigationView navView = findViewById(R.id.navigationView);
+        navView.getMenu().clear();
+        navView.inflateMenu(R.menu.navigation_menu);
+
         findViewById(R.id.imageMenu).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 drawerLayout.openDrawer(GravityCompat.START);
+
             }
         });
+
     }
 
 
@@ -125,6 +132,9 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
             case R.id.logout:
                 FirebaseAuth.getInstance().signOut();
                 releasePlayer();
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                return true;
+            case R.id.menuHome:
                 startActivity(new Intent(MainActivity.this, LoginActivity.class));
                 return true;
             default:
@@ -180,6 +190,20 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
             }
         }
 
+    }
+
+
+    public void btnHome(MenuItem item) {
+        startActivity(new Intent(MainActivity.this, HomeActivity.class));
+        simpleExoPlayer.stop();
+    }
+    public void btnSearch(MenuItem item) {
+        startActivity(new Intent(MainActivity.this, FetchDataTest.class));
+        simpleExoPlayer.stop();
+    }
+    public void btnYourlibrary(MenuItem item) {
+        startActivity(new Intent(MainActivity.this, PlaylistActivity.class));
+        simpleExoPlayer.stop();
     }
 
 }
