@@ -35,6 +35,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -85,6 +86,7 @@ public class FetchDataTest extends AppCompatActivity {
         artistThumbnailUrl = new ArrayList<String>();
         songId = new ArrayList<String>();
         songArrayList = new ArrayList<>();
+
         db = FirebaseFirestore.getInstance();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user!=null)

@@ -26,6 +26,7 @@ public class HomeActivity extends AppCompatActivity {
 
     ImageView recommended1image;
     ImageView recommended4image;
+
     ImageView lastListened1;
     ImageView lastListened2;
     ImageView lastListened3;
@@ -412,6 +413,7 @@ public class HomeActivity extends AppCompatActivity {
                         }
                     }
                 });
+
         recommended1image = findViewById(R.id.Recommended1image);
         recommended4image = findViewById(R.id.Recommended4image);
         recommended1image.setOnClickListener(new View.OnClickListener() {

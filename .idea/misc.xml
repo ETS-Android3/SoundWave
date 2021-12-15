@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/ProjectLogin/app/src/main/res/layout/activity_home.xml" value="0.36666666666666664" />
         <entry key="..\:/ProjectLogin/app/src/main/res/layout/activity_login.xml" value="0.20520833333333333" />
         <entry key="..\:/ProjectLogin/app/src/main/res/layout/activity_main.xml" value="0.22" />
         <entry key="..\:/ProjectLogin/app/src/main/res/layout/activity_register.xml" value="0.18" />
@@ -15,8 +16,10 @@
         <entry key="..\:/ProjectLogin/app/src/main/res/layout/settings_activity.xml" value="0.16" />
         <entry key="..\:/ProjectLogin/app/src/main/res/layout/style.xml" value="0.20520833333333333" />
         <entry key="..\:/ProjectLogin/app/src/main/res/menu/menu_example.xml" value="0.20989583333333334" />
+        <entry key="..\:/ProjectLogin/app/src/main/res/menu/navigation_menu.xml" value="0.36666666666666664" />
         <entry key="..\:/ProjectLogin/app/src/main/res/menu/overflow_menu.xml" value="0.20520833333333333" />
         <entry key="..\:/ProjectLogin/app/src/main/res/menu/profile_menu_example.xml" value="0.36666666666666664" />
+        <entry key="..\:/ProjectLogin/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.228125" />
         <entry key="..\:/ProjectLogin/app/src/main/res/xml/preferences.xml" value="0.33" />
         <entry key="..\:/Users/pc/AndroidStudioProjects/ProjectLogin/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2015625" />
         <entry key="..\:/Users/pc/AndroidStudioProjects/ProjectLogin/app/src/main/res/drawable/ic_like.xml" value="0.2015625" />
