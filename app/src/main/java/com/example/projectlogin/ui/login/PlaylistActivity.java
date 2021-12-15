@@ -16,6 +16,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.projectlogin.R;
 import com.example.projectlogin.databinding.ActivityMainBinding;
+import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -31,7 +35,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 public class PlaylistActivity extends AppCompatActivity {
@@ -50,6 +57,8 @@ public class PlaylistActivity extends AppCompatActivity {
     Handler mainHandler = new Handler();
     ProgressDialog progressDialog;
     ImageView imageView;
+    FirebaseFirestore db;
+    String userEmail;
     String urlFinal;
 
 
@@ -78,6 +87,12 @@ public class PlaylistActivity extends AppCompatActivity {
         playListName = new ArrayList<String>();
         songId = new ArrayList<String>();
         songArrayList = new ArrayList<>();
+        db = FirebaseFirestore.getInstance();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user!=null)
+        {
+            userEmail= user.getEmail();
+        }
 
 
         listAdapter = new ListAdapter(this, songArrayList);
@@ -91,6 +106,13 @@ public class PlaylistActivity extends AppCompatActivity {
                 i.putExtra("artist", artistName.get(position));
                 i.putExtra("thumbnail", thumbnailUrl.get(position));
                 i.putExtra("id", songId.get(position));
+                Map<String, Object> song = new HashMap<>();
+                song.put("artist",artistName.get(position));
+                song.put("songId", songId.get(position));
+                song.put("thumbnailUrl", thumbnailUrl.get(position));
+                song.put("title", trackList.get(position));
+                song.put("timestamp", new Timestamp(new Date()));
+                db.collection("users").document(userEmail).collection("stats").document("lastListened").collection("listenHistory").document(trackList.get(position)).set(song);
                 startActivity(i);
                 MainActivity.releasePlayer();
             }
