@@ -1,29 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="#121212"
     tools:context=".ui.login.FetchDataTest">
 
     <ImageView
-        android:layout_width="match_parent"
+        android:layout_width="250sp"
         android:layout_height="250sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/TextViewTest"
+        app:layout_constraintBottom_toTopOf="@id/PlaylistTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth_percent=".5"
+        android:src="@drawable/topsongs"
         android:id="@+id/Image"
         />
 
     <TextView
-        android:id="@+id/TextViewTest"
+        android:id="@+id/PlaylistTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:textColor="@color/white"
-        android:text=""
+        android:text="Top 100 Songs"
         android:textSize="30dp"
         android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth_percent=".5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/Image" />
 
@@ -33,34 +42,25 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:textColor="@color/white"
-        android:text="Popular Songs"
+        android:text="100 Songs - Duration 6 hours and 32 Minutes"
         android:textSize="17dp"
         android:paddingTop="15dp"
         android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth_percent=".5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/TextViewTest" />
+        app:layout_constraintTop_toBottomOf="@id/PlaylistTitle" />
 
     <ListView
         android:id="@+id/dataList"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
+        android:paddingBottom="318dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/TextViewTopSongs"
         tools:listitem="@layout/list_adapter_song" />
 
-    <TextView
-        android:id="@+id/TextViewAlbums"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:textColor="@color/white"
-        android:text="Albums"
-        android:textSize="17dp"
-        android:paddingTop="15dp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/dataList" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
