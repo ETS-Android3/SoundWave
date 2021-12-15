@@ -6,12 +6,15 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -48,13 +51,13 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         setContentView(R.layout.activity_main);
         albumImage = findViewById(R.id.AlbumImage);
         Intent intent = this.getIntent();
-        songTitle = findViewById(R.id.songTitle);
-        songArtist = findViewById(R.id.songArtist);
+        songTitle = findViewById (R.id.songTitle);
+        songArtist = findViewById (R.id.songArtist);
         songArtist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(MainActivity.this, FetchDataTest.class);
-                i.putExtra("artist", songArtist.getText().toString());
+                Intent i = new Intent(MainActivity.this,FetchDataTest.class);
+                i.putExtra("artist",songArtist.getText().toString());
                 startActivity(i);
             }
         });
@@ -67,12 +70,12 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
             String artist = intent.getStringExtra("artist");
             thumbnail = intent.getStringExtra("thumbnail");
             songId = intent.getStringExtra("id");
-            String replacedThumbnail = thumbnail.replaceAll("(=).*", " ");
+            String replacedThumbnail = thumbnail.replaceAll("(=).*"," ");
             songTitle.setText(track);
             songArtist.setText(artist);
             Picasso.get().load(replacedThumbnail).placeholder(R.drawable.missingbackground).error(R.drawable.missingbackground).fit().centerCrop().into(albumImage);
         }
-        url = ("https://stream-server-youtube.herokuapp.com/" + songId);
+        url = ("https://stream-server-youtube.herokuapp.com/"+songId);
         initPlayer();
         ImageButton btn = (ImageButton) findViewById(R.id.btnShow);
         btn.setOnClickListener(new View.OnClickListener() {
@@ -86,7 +89,6 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
 
         });
 
-
         mAuth = FirebaseAuth.getInstance();
 
         final DrawerLayout drawerLayout = findViewById(R.id.drawerLayout);
@@ -95,7 +97,6 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
             @Override
             public void onClick(View v) {
                 drawerLayout.openDrawer(GravityCompat.START);
-
             }
         });
     }
