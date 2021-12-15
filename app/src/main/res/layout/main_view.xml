@@ -46,10 +46,12 @@
 
             <TextView
                 android:id="@+id/Morning1text"
-                android:layout_width="wrap_content"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:maxLines="1"
                 android:text="Liked Songs"
+                android:layout_weight="1"
+                android:ellipsize="end"
                 android:textStyle="bold"
                 android:textColor="@color/white"
                 android:textSize="15sp" />
@@ -69,8 +71,10 @@
 
             <TextView
                 android:id="@+id/Morning2text"
-                android:layout_width="wrap_content"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:layout_weight="1"
                 android:text="Liked Songs"
                 android:textStyle="bold"
@@ -92,8 +96,10 @@
 
             <TextView
                 android:id="@+id/Morning3text"
-                android:layout_width="wrap_content"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:layout_weight="1"
                 android:text="Liked Songs"
                 android:textStyle="bold"
@@ -115,8 +121,10 @@
 
             <TextView
                 android:id="@+id/Morning4text"
-                android:layout_width="wrap_content"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:layout_weight="1"
                 android:text="Liked Songs"
                 android:textStyle="bold"
@@ -138,8 +146,10 @@
 
             <TextView
                 android:id="@+id/Morning5text"
-                android:layout_width="wrap_content"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:layout_weight="1"
                 android:text="Liked Songs"
                 android:textStyle="bold"
@@ -161,8 +171,10 @@
 
             <TextView
                 android:id="@+id/Morning6text"
-                android:layout_width="wrap_content"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:layout_weight="1"
                 android:text="Liked Songs"
                 android:textStyle="bold"
@@ -210,8 +222,10 @@
 
             <TextView
                 android:id="@+id/Recommended1text"
-                android:layout_width="wrap_content"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:layout_weight="1"
                 android:text="Top 100 Songs"
                 android:layout_marginLeft="10dp"
@@ -235,8 +249,10 @@
 
             <TextView
                 android:id="@+id/Recommended2text"
-                android:layout_width="wrap_content"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:layout_weight="1"
                 android:layout_marginLeft="10dp"
                 android:text="On Repeat"
@@ -260,8 +276,10 @@
 
             <TextView
                 android:id="@+id/Recommended3text"
-                android:layout_width="wrap_content"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:layout_weight="1"
                 android:layout_marginLeft="10dp"
                 android:text="Liked Songs"
@@ -285,8 +303,10 @@
 
             <TextView
                 android:id="@+id/Recommended4text"
-                android:layout_width="wrap_content"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:layout_weight="1"
                 android:text="New Release Mix"
                 android:layout_marginLeft="10dp"

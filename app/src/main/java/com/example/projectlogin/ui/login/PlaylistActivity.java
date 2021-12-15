@@ -113,6 +113,8 @@ public class PlaylistActivity extends AppCompatActivity {
                 song.put("title", trackList.get(position));
                 song.put("timestamp", new Timestamp(new Date()));
                 db.collection("users").document(userEmail).collection("stats").document("lastListened").collection("listenHistory").document(trackList.get(position)).set(song);
+                i.putExtra("listLength",trackList.size());
+                i.putExtra("songIdArray",songId);
                 startActivity(i);
                 MainActivity.releasePlayer();
             }

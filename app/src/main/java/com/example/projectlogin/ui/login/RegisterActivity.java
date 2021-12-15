@@ -3,6 +3,7 @@ package com.example.projectlogin.ui.login;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Patterns;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -61,14 +62,23 @@ public class RegisterActivity extends AppCompatActivity {
     private void createUser(){
         String email = etRegEmail.getText().toString();
         String password = etRegPassword.getText().toString();
+        String phone = etRegPhoneNumber.getText().toString();
 
         if (TextUtils.isEmpty(email)){
             etRegEmail.setError("Email cannot be empty");
             etRegEmail.requestFocus();
-        }else if (TextUtils.isEmpty(password)){
-            etRegPassword.setError("Password cannot be empty");
+        }else if (!PasswordCheck.password(password)){
+            etRegPassword.setError("Invalid Password");
             etRegPassword.requestFocus();
-        }else{
+        }else if (!Patterns.PHONE.matcher(phone).matches()){
+            etRegPhoneNumber.setError("Invalid phone number +030 (231) 021-2635");
+            etRegPhoneNumber.requestFocus();
+        }
+        else if (TextUtils.isEmpty(etRegUsername.getText().toString())){
+            etRegUsername.setError("Invalid username, must be longer than 4 characters.");
+            etRegUsername.requestFocus();
+        }
+        else{
             mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {

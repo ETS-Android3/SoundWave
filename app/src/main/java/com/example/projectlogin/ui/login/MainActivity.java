@@ -4,17 +4,13 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,6 +26,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
@@ -44,6 +41,8 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     ImageView imageProfile;
     ImageView albumImage;
     TextView songTitle, songArtist;
+    ArrayList<String> songIdArray;
+    int listLength;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +50,8 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         setContentView(R.layout.activity_main);
         albumImage = findViewById(R.id.AlbumImage);
         Intent intent = this.getIntent();
+        songIdArray = new ArrayList<>();
+        listLength=0;
         songTitle = findViewById (R.id.songTitle);
         songArtist = findViewById (R.id.songArtist);
         songArtist.setOnClickListener(new View.OnClickListener() {
@@ -73,11 +74,19 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
             String replacedThumbnail = thumbnail.replaceAll("(=).*"," ");
             songTitle.setText(track);
             songArtist.setText(artist);
+
             Picasso.get().load(replacedThumbnail).placeholder(R.drawable.missingbackground).error(R.drawable.missingbackground).fit().centerCrop().into(albumImage);
+            listLength = (int) intent.getSerializableExtra("listLength");
+            songIdArray = (ArrayList<String>) intent.getSerializableExtra("songIdArray");
         }
         url = ("https://stream-server-youtube.herokuapp.com/"+songId);
         initPlayer();
         ImageButton btn = (ImageButton) findViewById(R.id.btnShow);
+        simpleExoPlayer.addMediaItem(MediaItem.fromUri("https://stream-server-youtube.herokuapp.com/"+songId));
+        for (int i=0; i < listLength; i++){
+            Log.d("ArrayListSongId",songIdArray.get(i));
+            simpleExoPlayer.addMediaItem(i,MediaItem.fromUri("https://stream-server-youtube.herokuapp.com/"+songIdArray.get(i)));
+        }
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -130,6 +139,13 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         }
     }
 
+//    public static void addMediaItemSong(){
+//        int listLength = intent.
+//        for (int i=0; i < listLength; i++) {
+//            simpleExoPlayer.addMediaItem(i,MediaItem.fromUri("https://stream-server-youtube.herokuapp.com/"+songId.get(i)));
+//        }
+//    }
+
     public void initPlayer(){
         List<MediaItem> newItems = ImmutableList.of(
                 MediaItem.fromUri(Uri.parse(url)));
@@ -138,7 +154,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         playerView.setCameraDistance(30);
         simpleExoPlayer = new SimpleExoPlayer.Builder(this).build();
         playerView.setPlayer(simpleExoPlayer);
-        simpleExoPlayer.setMediaItems(newItems,true);
+        //simpleExoPlayer.setMediaItems(newItems,true);
         simpleExoPlayer.prepare();
         simpleExoPlayer.setPlayWhenReady(true);
     }
