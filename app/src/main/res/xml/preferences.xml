@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="General" >
+
+
+        <ListPreference
+            android:defaultValue="3"
+            android:dialogTitle="@string/privacy_settings"
+            android:entries="@array/privacy_cookies"
+            android:entryValues="@array/privacy_cookies"
+            android:key="@string/privacy_settings"
+            android:summary="@string/privacy"
+            android:title="@string/privacy_settings" />
+
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="@string/notification_settings"
+            android:title="@string/notification_settings"
+            android:summary="@string/notification" />
+
+
+
+        <SwitchPreferenceCompat
+            android:defaultValue="false"
+            android:key="darkmode"
+            android:summary="@string/restricated_mode"
+            android:title="Dark Mode" />
+
+        <Preference
+            android:key="feedback"
+            android:title="Send feedback"
+            android:summary="Report technical issues or suggest new features"/>
+
+        <Preference
+            android:key="About"
+            android:title="About"
+            android:summary="Version 1.0"/>
+
+    </PreferenceCategory>
+
+
+</PreferenceScreen>

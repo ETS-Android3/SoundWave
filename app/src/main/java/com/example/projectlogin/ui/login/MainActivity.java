@@ -1,99 +1,166 @@
 package com.example.projectlogin.ui.login;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.PopupMenu;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
-
 import com.example.projectlogin.R;
+import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
-import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.source.ProgressiveMediaSource;
 import com.google.android.exoplayer2.ui.PlayerView;
-import com.google.android.exoplayer2.upstream.DataSource;
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
-import com.google.android.exoplayer2.util.Util;
 import com.google.android.material.navigation.NavigationView;
+import com.google.common.collect.ImmutableList;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.squareup.picasso.Picasso;
 
-import java.io.IOException;
+import java.util.List;
 
-public class MainActivity<usernameString> extends AppCompatActivity {
-    Button btnLogOut;
+public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
+
+
     FirebaseAuth mAuth;
-    SimpleExoPlayer simpleExoPlayer;
+    public static SimpleExoPlayer simpleExoPlayer;
     PlayerView playerView;
-    String songUrl = "https://firebasestorage.googleapis.com/v0/b/projectlogin-c32ae.appspot.com/o/Rick%20Astley%20-%20Never%20Gonna%20Give%20You%20Up.mp3?alt=media&token=c81d934f-5206-41c4-a25c-433494bcc96d";
+    String songId;
+    String thumbnail;
+    String url;
     ImageView imageProfile;
-    TextView profileName,profileStatus;
+    ImageView albumImage;
+    TextView songTitle, songArtist;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        albumImage = findViewById(R.id.AlbumImage);
+        Intent intent = this.getIntent();
+        songTitle = findViewById(R.id.songTitle);
+        songArtist = findViewById(R.id.songArtist);
+        songArtist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(MainActivity.this, FetchDataTest.class);
+                i.putExtra("artist", songArtist.getText().toString());
+                startActivity(i);
+            }
+        });
+//        songArtist.setOnClickListener(view -> {
+//            startActivity(new Intent(MainActivity.this,FetchDataTest.class));
+//        });
+
+        if (intent != null) {
+            String track = intent.getStringExtra("track");
+            String artist = intent.getStringExtra("artist");
+            thumbnail = intent.getStringExtra("thumbnail");
+            songId = intent.getStringExtra("id");
+            String replacedThumbnail = thumbnail.replaceAll("(=).*", " ");
+            songTitle.setText(track);
+            songArtist.setText(artist);
+            Picasso.get().load(replacedThumbnail).placeholder(R.drawable.missingbackground).error(R.drawable.missingbackground).fit().centerCrop().into(albumImage);
+        }
+        url = ("https://stream-server-youtube.herokuapp.com/" + songId);
         initPlayer();
+        ImageButton btn = (ImageButton) findViewById(R.id.btnShow);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupMenu popup = new PopupMenu(MainActivity.this, v);
+                popup.setOnMenuItemClickListener(MainActivity.this);
+                popup.inflate(R.menu.menu_example);
+                popup.show();
+            }
 
-        btnLogOut = findViewById(R.id.btnLogout);
-        mAuth = FirebaseAuth.getInstance();
-
-        btnLogOut.setOnClickListener(view -> {
-            releasePlayer();
-            mAuth.signOut();
-            startActivity(new Intent(MainActivity.this, LoginActivity.class));
         });
 
+
+        mAuth = FirebaseAuth.getInstance();
+
         final DrawerLayout drawerLayout = findViewById(R.id.drawerLayout);
+
+        NavigationView navView = findViewById(R.id.navigationView);
+        navView.getMenu().clear();
+        navView.inflateMenu(R.menu.navigation_menu);
 
         findViewById(R.id.imageMenu).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 drawerLayout.openDrawer(GravityCompat.START);
+
             }
         });
 
-        //NavigationView navigationView = findViewById(R.id.navigationView);
-        //navigationView.setItemIconTintList(null);
-
-        imageProfile = findViewById(R.id.imageProfile);
-
     }
 
-    private void releasePlayer() {
-        simpleExoPlayer.stop();
+
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.profile:
+                startActivity(new Intent(MainActivity.this, ProfileActivity.class));
+                //releasePlayer();
+                return true;
+            case R.id.idBtnSettings:
+                startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+                //releasePlayer();
+                return true;
+            case R.id.logout:
+                FirebaseAuth.getInstance().signOut();
+                releasePlayer();
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                return true;
+            case R.id.menuHome:
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                return true;
+            default:
+                return true;
+        }
+    }
+    public static void releasePlayer() {
+        if (simpleExoPlayer != null) {
+            simpleExoPlayer.setPlayWhenReady(false);
+            simpleExoPlayer.stop();
+            simpleExoPlayer.seekTo(0);
+        }
     }
 
-    public void initPlayer() {
+    public void initPlayer(){
+        List<MediaItem> newItems = ImmutableList.of(
+                MediaItem.fromUri(Uri.parse(url)));
         playerView = findViewById(R.id.playerView);
         playerView.setControllerShowTimeoutMs(0);
         playerView.setCameraDistance(30);
         simpleExoPlayer = new SimpleExoPlayer.Builder(this).build();
         playerView.setPlayer(simpleExoPlayer);
-        DefaultExtractorsFactory extractorsFactory =
-                new DefaultExtractorsFactory().setConstantBitrateSeekingEnabled(true);
-        DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(this,
-                Util.getUserAgent(this, "app"));
-        MediaSource audiosource = new ProgressiveMediaSource.Factory(dataSourceFactory, extractorsFactory).createMediaSource(Uri.parse("https://stream-server-youtube.herokuapp.com/dQw4w9WgXcQ"));
-        simpleExoPlayer.prepare(audiosource);
+        simpleExoPlayer.setMediaItems(newItems,true);
+        simpleExoPlayer.prepare();
         simpleExoPlayer.setPlayWhenReady(true);
     }
 
 
     @Override
+
     protected void onStart() {
         super.onStart();
         FirebaseUser user = mAuth.getCurrentUser();
-        if (user == null) {
+        if (user == null){
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
         }
     }
@@ -109,4 +176,20 @@ public class MainActivity<usernameString> extends AppCompatActivity {
         }
 
     }
+
+    public void btnHome(MenuItem item) {
+        startActivity(new Intent(MainActivity.this, HomeActivity.class));
+        simpleExoPlayer.stop();
+    }
+    public void btnSearch(MenuItem item) {
+        startActivity(new Intent(MainActivity.this, FetchDataTest.class));
+        simpleExoPlayer.stop();
+    }
+    public void btnYourlibrary(MenuItem item) {
+        startActivity(new Intent(MainActivity.this, PlaylistActivity.class));
+        simpleExoPlayer.stop();
+    }
 }
+
+
+
