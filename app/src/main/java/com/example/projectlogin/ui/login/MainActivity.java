@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -13,7 +14,14 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,7 +32,9 @@ import com.example.projectlogin.R;
 import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.ui.PlayerView;
+
 import com.google.android.material.navigation.NavigationView;
+
 import com.google.common.collect.ImmutableList;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -51,13 +61,13 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         setContentView(R.layout.activity_main);
         albumImage = findViewById(R.id.AlbumImage);
         Intent intent = this.getIntent();
-        songTitle = findViewById(R.id.songTitle);
-        songArtist = findViewById(R.id.songArtist);
+        songTitle = findViewById (R.id.songTitle);
+        songArtist = findViewById (R.id.songArtist);
         songArtist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(MainActivity.this, FetchDataTest.class);
-                i.putExtra("artist", songArtist.getText().toString());
+                Intent i = new Intent(MainActivity.this,FetchDataTest.class);
+                i.putExtra("artist",songArtist.getText().toString());
                 startActivity(i);
             }
         });
@@ -70,12 +80,13 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
             String artist = intent.getStringExtra("artist");
             thumbnail = intent.getStringExtra("thumbnail");
             songId = intent.getStringExtra("id");
-            String replacedThumbnail = thumbnail.replaceAll("(=).*", " ");
+
+            String replacedThumbnail = thumbnail.replaceAll("(=).*"," ");
             songTitle.setText(track);
             songArtist.setText(artist);
             Picasso.get().load(replacedThumbnail).placeholder(R.drawable.missingbackground).error(R.drawable.missingbackground).fit().centerCrop().into(albumImage);
         }
-        url = ("https://stream-server-youtube.herokuapp.com/" + songId);
+        url = ("https://stream-server-youtube.herokuapp.com/"+songId);
         initPlayer();
         ImageButton btn = (ImageButton) findViewById(R.id.btnShow);
         btn.setOnClickListener(new View.OnClickListener() {
@@ -88,7 +99,6 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
             }
 
         });
-
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -107,7 +117,6 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         });
 
     }
-
 
 
     @Override
@@ -177,6 +186,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
 
     }
 
+
     public void btnHome(MenuItem item) {
         startActivity(new Intent(MainActivity.this, HomeActivity.class));
         simpleExoPlayer.stop();
@@ -189,6 +199,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         startActivity(new Intent(MainActivity.this, PlaylistActivity.class));
         simpleExoPlayer.stop();
     }
+
 }
 
 
