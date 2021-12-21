@@ -30,4 +30,7 @@
     <string name="ylibrary">Your Library</string>
     <string name="cplaylist">Create A Playlist</string>
     <string name="likedsongs">Liked Songs</string>
+    <string name="Logout">Log Out</string>
+    <string name="settings">Settings</string>
+    <string name="profile">Profile</string>
 </resources>

@@ -7,9 +7,7 @@
         android:id="@+id/menuHome"
         android:icon="@drawable/ic_home"
         android:title="@string/home"
-        android:onClick="btnHome"
-
-        />
+        android:onClick="btnHome" />
     <item
         android:id="@+id/menuSearch"
         android:icon="@drawable/ic_search"
@@ -20,6 +18,11 @@
         android:icon="@drawable/libraryclone"
         android:title="@string/ylibrary"
         android:onClick="btnYourlibrary"/>
+    <item
+        android:id="@+id/btnProfile"
+        android:icon="@drawable/profile"
+        android:title="@string/profile"
+        android:onClick="btnProfile"/>
 
     <item android:title="@string/others">
         <menu>
@@ -38,4 +41,14 @@
 
     </item>
 
+    <item
+        android:id="@+id/btnSettings"
+        android:icon="@drawable/settings"
+        android:title="@string/settings"
+        android:onClick="btnSettings"/>
+    <item
+        android:id="@+id/btnLogout"
+        android:icon="@drawable/logout"
+        android:title="@string/Logout"
+        android:onClick="btnLogout"/>
 </menu>

@@ -7,9 +7,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageButton;
+
 import android.widget.ImageView;
-import android.widget.PopupMenu;
+
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -30,7 +30,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
+public class MainActivity extends AppCompatActivity  {
 
 
     FirebaseAuth mAuth;
@@ -63,9 +63,6 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
                 startActivity(i);
             }
         });
-//        songArtist.setOnClickListener(view -> {
-//            startActivity(new Intent(MainActivity.this,FetchDataTest.class));
-//        });
 
         if (intent != null) {
             String track = intent.getStringExtra("track");
@@ -82,22 +79,11 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         }
         url = ("https://stream-server-youtube.herokuapp.com/"+songId);
         initPlayer();
-        ImageButton btn = (ImageButton) findViewById(R.id.btnShow);
         simpleExoPlayer.addMediaItem(MediaItem.fromUri("https://stream-server-youtube.herokuapp.com/"+songId));
         for (int i=0; i < listLength; i++){
             Log.d("ArrayListSongId",songIdArray.get(i));
             simpleExoPlayer.addMediaItem(i,MediaItem.fromUri("https://stream-server-youtube.herokuapp.com/"+songIdArray.get(i)));
         }
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PopupMenu popup = new PopupMenu(MainActivity.this, v);
-                popup.setOnMenuItemClickListener(MainActivity.this);
-                popup.inflate(R.menu.menu_example);
-                popup.show();
-            }
-
-        });
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -118,29 +104,6 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     }
 
 
-    @Override
-    public boolean onMenuItemClick(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.profile:
-                startActivity(new Intent(MainActivity.this, ProfileActivity.class));
-                //releasePlayer();
-                return true;
-            case R.id.idBtnSettings:
-                startActivity(new Intent(MainActivity.this, SettingsActivity.class));
-                //releasePlayer();
-                return true;
-            case R.id.logout:
-                FirebaseAuth.getInstance().signOut();
-                releasePlayer();
-                startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                return true;
-            case R.id.menuHome:
-                startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                return true;
-            default:
-                return true;
-        }
-    }
     public static void releasePlayer() {
         if (simpleExoPlayer != null) {
             simpleExoPlayer.setPlayWhenReady(false);
@@ -149,12 +112,6 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         }
     }
 
-//    public static void addMediaItemSong(){
-//        int listLength = intent.
-//        for (int i=0; i < listLength; i++) {
-//            simpleExoPlayer.addMediaItem(i,MediaItem.fromUri("https://stream-server-youtube.herokuapp.com/"+songId.get(i)));
-//        }
-//    }
 
     public void initPlayer(){
         List<MediaItem> newItems = ImmutableList.of(
@@ -173,6 +130,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     @Override
 
     protected void onStart() {
+
         super.onStart();
         FirebaseUser user = mAuth.getCurrentUser();
         if (user == null){
@@ -192,7 +150,17 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
 
     }
 
-
+    public void Profileredirect(View v){
+        ImageView imgFavorite = findViewById(R.id.imageProfile);
+        imgFavorite.setClickable(true);
+        imgFavorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, ProfileActivity.class));
+                simpleExoPlayer.stop();
+            }
+        });
+    }
     public void btnHome(MenuItem item) {
         startActivity(new Intent(MainActivity.this, HomeActivity.class));
         simpleExoPlayer.stop();
@@ -204,6 +172,20 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     public void btnYourlibrary(MenuItem item) {
         startActivity(new Intent(MainActivity.this, PlaylistActivity.class));
         simpleExoPlayer.stop();
+    }
+    public void btnSettings(MenuItem item) {
+        startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+        simpleExoPlayer.stop();
+    }
+    public void btnProfile(MenuItem item) {
+        startActivity(new Intent(MainActivity.this, ProfileActivity.class));
+        simpleExoPlayer.stop();
+
+    }
+    public void btnLogout(MenuItem item) {
+        FirebaseAuth.getInstance().signOut();
+        releasePlayer();
+        startActivity(new Intent(MainActivity.this, LoginActivity.class));
     }
 
 }
