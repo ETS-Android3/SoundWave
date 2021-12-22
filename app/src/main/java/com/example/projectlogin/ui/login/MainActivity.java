@@ -7,9 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-
 import android.widget.ImageView;
-
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -19,6 +17,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.projectlogin.R;
 import com.google.android.exoplayer2.MediaItem;
+import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.material.navigation.NavigationView;
@@ -43,7 +42,11 @@ public class MainActivity extends AppCompatActivity  {
     ImageView albumImage;
     TextView songTitle, songArtist;
     ArrayList<String> songIdArray;
+    ArrayList<String> songArtistArray;
+    ArrayList<String> thumbnailArray;
+    ArrayList<String> songTitleArray;
     int listLength;
+    int lastWindowIndex = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,9 +55,13 @@ public class MainActivity extends AppCompatActivity  {
         albumImage = findViewById(R.id.AlbumImage);
         Intent intent = this.getIntent();
         songIdArray = new ArrayList<>();
+        songArtistArray = new ArrayList<>();
+        thumbnailArray = new ArrayList<>();
+        songTitleArray = new ArrayList<>();
         listLength=0;
         songTitle = findViewById (R.id.songTitle);
         songArtist = findViewById (R.id.songArtist);
+
         songArtist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -72,18 +79,37 @@ public class MainActivity extends AppCompatActivity  {
             String replacedThumbnail = thumbnail.replaceAll("(=).*"," ");
             songTitle.setText(track);
             songArtist.setText(artist);
-
             Picasso.get().load(replacedThumbnail).placeholder(R.drawable.missingbackground).error(R.drawable.missingbackground).fit().centerCrop().into(albumImage);
             listLength = (int) intent.getSerializableExtra("listLength");
             songIdArray = (ArrayList<String>) intent.getSerializableExtra("songIdArray");
+            songArtistArray = (ArrayList<String>) intent.getSerializableExtra("artistArray");
+            thumbnailArray = (ArrayList<String>) intent.getSerializableExtra("thumbnailArray");
+            songTitleArray = (ArrayList<String>) intent.getSerializableExtra("trackArray");
         }
+
         url = ("https://stream-server-youtube.herokuapp.com/"+songId);
         initPlayer();
-        simpleExoPlayer.addMediaItem(MediaItem.fromUri("https://stream-server-youtube.herokuapp.com/"+songId));
-        for (int i=0; i < listLength; i++){
+
+        simpleExoPlayer.addMediaItem(0,MediaItem.fromUri("https://stream-server-youtube.herokuapp.com/"+songId));
+        for (int i=1; i < listLength; i++){
             Log.d("ArrayListSongId",songIdArray.get(i));
             simpleExoPlayer.addMediaItem(i,MediaItem.fromUri("https://stream-server-youtube.herokuapp.com/"+songIdArray.get(i)));
         }
+
+        simpleExoPlayer.addListener(new Player.Listener() {
+            //@Override
+            public void onPositionDiscontinuity(int DISCONTINUITY_REASON_SKIP){
+                int latestWindowIndex = simpleExoPlayer.getCurrentWindowIndex();
+                if (latestWindowIndex != lastWindowIndex){
+                    lastWindowIndex = latestWindowIndex;
+                    songTitle.setText(songTitleArray.get(latestWindowIndex));
+                    songArtist.setText(songArtistArray.get(latestWindowIndex));
+                    thumbnail = thumbnailArray.get(latestWindowIndex);
+                    String replacedThumbnail = thumbnail.replaceAll("(=).*"," ");
+                    Picasso.get().load(replacedThumbnail).placeholder(R.drawable.missingbackground).error(R.drawable.missingbackground).fit().centerCrop().into(albumImage);
+                }
+            }
+        });
 
         mAuth = FirebaseAuth.getInstance();
 

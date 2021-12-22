@@ -112,6 +112,11 @@ public class HomeActivity extends AppCompatActivity {
                                             i.putExtra("artist", songArtist.get(0));
                                             i.putExtra("thumbnail", thumbnailUrl.get(0) );
                                             i.putExtra("id", songId.get(0) );
+                                            i.putExtra("listLength",songId.size());
+                                            i.putExtra("songIdArray",songId);
+                                            i.putExtra("artistArray", songArtist);
+                                            i.putExtra("thumbnailArray", thumbnailUrl);
+                                            i.putExtra("trackArray", songTitle);
                                             startActivity(i);
                                             MainActivity.releasePlayer();
                                         }
@@ -130,6 +135,11 @@ public class HomeActivity extends AppCompatActivity {
                                             i.putExtra("artist", songArtist.get(0));
                                             i.putExtra("thumbnail", thumbnailUrl.get(0) );
                                             i.putExtra("id", songId.get(0) );
+                                            i.putExtra("listLength",songId.size());
+                                            i.putExtra("songIdArray",songId);
+                                            i.putExtra("artistArray", songArtist);
+                                            i.putExtra("thumbnailArray", thumbnailUrl);
+                                            i.putExtra("trackArray", songTitle);
                                             startActivity(i);
                                             MainActivity.releasePlayer();
                                         }
@@ -142,6 +152,11 @@ public class HomeActivity extends AppCompatActivity {
                                             i.putExtra("artist", songArtist.get(1));
                                             i.putExtra("thumbnail", thumbnailUrl.get(1) );
                                             i.putExtra("id", songId.get(1) );
+                                            i.putExtra("listLength",songId.size());
+                                            i.putExtra("songIdArray",songId);
+                                            i.putExtra("artistArray", songArtist);
+                                            i.putExtra("thumbnailArray", thumbnailUrl);
+                                            i.putExtra("trackArray", songTitle);
                                             startActivity(i);
                                             MainActivity.releasePlayer();
                                         }
@@ -162,6 +177,12 @@ public class HomeActivity extends AppCompatActivity {
                                             i.putExtra("artist", songArtist.get(0));
                                             i.putExtra("thumbnail", thumbnailUrl.get(0) );
                                             i.putExtra("id", songId.get(0) );
+                                            i.putExtra("listLength",songId.size());
+                                            i.putExtra("listLength",songId.size());
+                                            i.putExtra("songIdArray",songId);
+                                            i.putExtra("artistArray", songArtist);
+                                            i.putExtra("thumbnailArray", thumbnailUrl);
+                                            i.putExtra("trackArray", songTitle);
                                             startActivity(i);
                                             MainActivity.releasePlayer();
                                         }
@@ -174,6 +195,11 @@ public class HomeActivity extends AppCompatActivity {
                                             i.putExtra("artist", songArtist.get(1));
                                             i.putExtra("thumbnail", thumbnailUrl.get(1) );
                                             i.putExtra("id", songId.get(1) );
+                                            i.putExtra("listLength",songId.size());
+                                            i.putExtra("songIdArray",songId);
+                                            i.putExtra("artistArray", songArtist);
+                                            i.putExtra("thumbnailArray", thumbnailUrl);
+                                            i.putExtra("trackArray", songTitle);
                                             startActivity(i);
                                             MainActivity.releasePlayer();
                                         }
@@ -186,6 +212,11 @@ public class HomeActivity extends AppCompatActivity {
                                             i.putExtra("artist", songArtist.get(2));
                                             i.putExtra("thumbnail", thumbnailUrl.get(2) );
                                             i.putExtra("id", songId.get(2) );
+                                            i.putExtra("listLength",songId.size());
+                                            i.putExtra("songIdArray",songId);
+                                            i.putExtra("artistArray", songArtist);
+                                            i.putExtra("thumbnailArray", thumbnailUrl);
+                                            i.putExtra("trackArray", songTitle);
                                             startActivity(i);
                                             MainActivity.releasePlayer();
                                         }
@@ -208,6 +239,11 @@ public class HomeActivity extends AppCompatActivity {
                                             i.putExtra("artist", songArtist.get(0));
                                             i.putExtra("thumbnail", thumbnailUrl.get(0) );
                                             i.putExtra("id", songId.get(0) );
+                                            i.putExtra("listLength",songId.size());
+                                            i.putExtra("songIdArray",songId);
+                                            i.putExtra("artistArray", songArtist);
+                                            i.putExtra("thumbnailArray", thumbnailUrl);
+                                            i.putExtra("trackArray", songTitle);
                                             startActivity(i);
                                             MainActivity.releasePlayer();
                                         }
@@ -220,6 +256,11 @@ public class HomeActivity extends AppCompatActivity {
                                             i.putExtra("artist", songArtist.get(1));
                                             i.putExtra("thumbnail", thumbnailUrl.get(1) );
                                             i.putExtra("id", songId.get(1) );
+                                            i.putExtra("listLength",songId.size());
+                                            i.putExtra("songIdArray",songId);
+                                            i.putExtra("artistArray", songArtist);
+                                            i.putExtra("thumbnailArray", thumbnailUrl);
+                                            i.putExtra("trackArray", songTitle);
                                             startActivity(i);
                                             MainActivity.releasePlayer();
                                         }
@@ -232,6 +273,11 @@ public class HomeActivity extends AppCompatActivity {
                                             i.putExtra("artist", songArtist.get(2));
                                             i.putExtra("thumbnail", thumbnailUrl.get(2) );
                                             i.putExtra("id", songId.get(2) );
+                                            i.putExtra("listLength",songId.size());
+                                            i.putExtra("songIdArray",songId);
+                                            i.putExtra("artistArray", songArtist);
+                                            i.putExtra("thumbnailArray", thumbnailUrl);
+                                            i.putExtra("trackArray", songTitle);
                                             startActivity(i);
                                             MainActivity.releasePlayer();
                                         }
@@ -244,6 +290,11 @@ public class HomeActivity extends AppCompatActivity {
                                             i.putExtra("artist", songArtist.get(3));
                                             i.putExtra("thumbnail", thumbnailUrl.get(3) );
                                             i.putExtra("id", songId.get(3) );
+                                            i.putExtra("listLength",songId.size());
+                                            i.putExtra("songIdArray",songId);
+                                            i.putExtra("artistArray", songArtist);
+                                            i.putExtra("thumbnailArray", thumbnailUrl);
+                                            i.putExtra("trackArray", songTitle);
                                             startActivity(i);
                                             MainActivity.releasePlayer();
                                         }
@@ -268,6 +319,11 @@ public class HomeActivity extends AppCompatActivity {
                                             i.putExtra("artist", songArtist.get(0));
                                             i.putExtra("thumbnail", thumbnailUrl.get(0) );
                                             i.putExtra("id", songId.get(0) );
+                                            i.putExtra("listLength",songId.size());
+                                            i.putExtra("songIdArray",songId);
+                                            i.putExtra("artistArray", songArtist);
+                                            i.putExtra("thumbnailArray", thumbnailUrl);
+                                            i.putExtra("trackArray", songTitle);
                                             startActivity(i);
                                             MainActivity.releasePlayer();
                                         }
@@ -280,6 +336,11 @@ public class HomeActivity extends AppCompatActivity {
                                             i.putExtra("artist", songArtist.get(1));
                                             i.putExtra("thumbnail", thumbnailUrl.get(1) );
                                             i.putExtra("id", songId.get(1) );
+                                            i.putExtra("listLength",songId.size());
+                                            i.putExtra("songIdArray",songId);
+                                            i.putExtra("artistArray", songArtist);
+                                            i.putExtra("thumbnailArray", thumbnailUrl);
+                                            i.putExtra("trackArray", songTitle);
                                             startActivity(i);
                                             MainActivity.releasePlayer();
                                         }
@@ -292,6 +353,11 @@ public class HomeActivity extends AppCompatActivity {
                                             i.putExtra("artist", songArtist.get(2));
                                             i.putExtra("thumbnail", thumbnailUrl.get(2) );
                                             i.putExtra("id", songId.get(2) );
+                                            i.putExtra("listLength",songId.size());
+                                            i.putExtra("songIdArray",songId);
+                                            i.putExtra("artistArray", songArtist);
+                                            i.putExtra("thumbnailArray", thumbnailUrl);
+                                            i.putExtra("trackArray", songTitle);
                                             startActivity(i);
                                             MainActivity.releasePlayer();
                                         }
@@ -304,6 +370,11 @@ public class HomeActivity extends AppCompatActivity {
                                             i.putExtra("artist", songArtist.get(3));
                                             i.putExtra("thumbnail", thumbnailUrl.get(3) );
                                             i.putExtra("id", songId.get(3) );
+                                            i.putExtra("listLength",songId.size());
+                                            i.putExtra("songIdArray",songId);
+                                            i.putExtra("artistArray", songArtist);
+                                            i.putExtra("thumbnailArray", thumbnailUrl);
+                                            i.putExtra("trackArray", songTitle);
                                             startActivity(i);
                                             MainActivity.releasePlayer();
                                         }
@@ -316,6 +387,11 @@ public class HomeActivity extends AppCompatActivity {
                                             i.putExtra("artist", songArtist.get(4));
                                             i.putExtra("thumbnail", thumbnailUrl.get(4) );
                                             i.putExtra("id", songId.get(4) );
+                                            i.putExtra("listLength",songId.size());
+                                            i.putExtra("songIdArray",songId);
+                                            i.putExtra("artistArray", songArtist);
+                                            i.putExtra("thumbnailArray", thumbnailUrl);
+                                            i.putExtra("trackArray", songTitle);
                                             startActivity(i);
                                             MainActivity.releasePlayer();
                                         }
@@ -342,6 +418,11 @@ public class HomeActivity extends AppCompatActivity {
                                             i.putExtra("artist", songArtist.get(0));
                                             i.putExtra("thumbnail", thumbnailUrl.get(0) );
                                             i.putExtra("id", songId.get(0) );
+                                            i.putExtra("listLength",songId.size());
+                                            i.putExtra("songIdArray",songId);
+                                            i.putExtra("artistArray", songArtist);
+                                            i.putExtra("thumbnailArray", thumbnailUrl);
+                                            i.putExtra("trackArray", songTitle);
                                             startActivity(i);
                                             MainActivity.releasePlayer();
                                         }
@@ -354,6 +435,11 @@ public class HomeActivity extends AppCompatActivity {
                                             i.putExtra("artist", songArtist.get(1));
                                             i.putExtra("thumbnail", thumbnailUrl.get(1) );
                                             i.putExtra("id", songId.get(1) );
+                                            i.putExtra("listLength",songId.size());
+                                            i.putExtra("songIdArray",songId);
+                                            i.putExtra("artistArray", songArtist);
+                                            i.putExtra("thumbnailArray", thumbnailUrl);
+                                            i.putExtra("trackArray", songTitle);
                                             startActivity(i);
                                             MainActivity.releasePlayer();
                                         }
@@ -366,6 +452,11 @@ public class HomeActivity extends AppCompatActivity {
                                             i.putExtra("artist", songArtist.get(2));
                                             i.putExtra("thumbnail", thumbnailUrl.get(2) );
                                             i.putExtra("id", songId.get(2) );
+                                            i.putExtra("listLength",songId.size());
+                                            i.putExtra("songIdArray",songId);
+                                            i.putExtra("artistArray", songArtist);
+                                            i.putExtra("thumbnailArray", thumbnailUrl);
+                                            i.putExtra("trackArray", songTitle);
                                             startActivity(i);
                                             MainActivity.releasePlayer();
                                         }
@@ -378,6 +469,11 @@ public class HomeActivity extends AppCompatActivity {
                                             i.putExtra("artist", songArtist.get(3));
                                             i.putExtra("thumbnail", thumbnailUrl.get(3) );
                                             i.putExtra("id", songId.get(3) );
+                                            i.putExtra("listLength",songId.size());
+                                            i.putExtra("songIdArray",songId);
+                                            i.putExtra("artistArray", songArtist);
+                                            i.putExtra("thumbnailArray", thumbnailUrl);
+                                            i.putExtra("trackArray", songTitle);
                                             startActivity(i);
                                             MainActivity.releasePlayer();
                                         }
@@ -390,6 +486,11 @@ public class HomeActivity extends AppCompatActivity {
                                             i.putExtra("artist", songArtist.get(4));
                                             i.putExtra("thumbnail", thumbnailUrl.get(4) );
                                             i.putExtra("id", songId.get(4) );
+                                            i.putExtra("listLength",songId.size());
+                                            i.putExtra("songIdArray",songId);
+                                            i.putExtra("artistArray", songArtist);
+                                            i.putExtra("thumbnailArray", thumbnailUrl);
+                                            i.putExtra("trackArray", songTitle);
                                             startActivity(i);
                                             MainActivity.releasePlayer();
                                         }
@@ -402,6 +503,11 @@ public class HomeActivity extends AppCompatActivity {
                                             i.putExtra("artist", songArtist.get(5));
                                             i.putExtra("thumbnail", thumbnailUrl.get(5) );
                                             i.putExtra("id", songId.get(5) );
+                                            i.putExtra("listLength",songId.size());
+                                            i.putExtra("songIdArray",songId);
+                                            i.putExtra("artistArray", songArtist);
+                                            i.putExtra("thumbnailArray", thumbnailUrl);
+                                            i.putExtra("trackArray", songTitle);
                                             startActivity(i);
                                             MainActivity.releasePlayer();
                                         }

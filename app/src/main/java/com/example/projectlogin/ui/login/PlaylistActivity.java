@@ -115,6 +115,9 @@ public class PlaylistActivity extends AppCompatActivity {
                 db.collection("users").document(userEmail).collection("stats").document("lastListened").collection("listenHistory").document(trackList.get(position)).set(song);
                 i.putExtra("listLength",trackList.size());
                 i.putExtra("songIdArray",songId);
+                i.putExtra("artistArray", artistName);
+                i.putExtra("thumbnailArray", thumbnailUrl);
+                i.putExtra("trackArray", trackList);
                 startActivity(i);
                 MainActivity.releasePlayer();
             }
