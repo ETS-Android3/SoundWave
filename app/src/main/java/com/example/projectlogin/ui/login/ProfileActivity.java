@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -23,6 +25,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 
 public class ProfileActivity  extends AppCompatActivity {
@@ -87,6 +90,8 @@ public class ProfileActivity  extends AppCompatActivity {
                 imageChooser();
             }
         });
+
+        setupBottomNavigation();
     }
 
 
@@ -112,6 +117,16 @@ public class ProfileActivity  extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    private void setupBottomNavigation(){
+        BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottomNavViewBar);
+        BottomNavigationHelper.setupBottomNavigationView(bottomNavigationViewEx);
+        BottomNavigationHelper.enableNavigation(ProfileActivity.this,bottomNavigationViewEx);
+
+        Menu menu = bottomNavigationViewEx.getMenu();
+        MenuItem menuItem = menu.getItem(2);
+        menuItem.setChecked(true);
     }
 }
 

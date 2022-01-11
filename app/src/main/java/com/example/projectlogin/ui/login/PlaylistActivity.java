@@ -1,25 +1,37 @@
 package com.example.projectlogin.ui.login;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.projectlogin.R;
 import com.example.projectlogin.databinding.ActivityMainBinding;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -76,6 +88,7 @@ public class PlaylistActivity extends AppCompatActivity {
             String playlistId = intent.getStringExtra("playlistUrl");
             urlFinal = ("https://yma-server.herokuapp.com/playlist/"+playlistId);
         }
+        setupBottomNavigation();
     }
 
     private void initializeDataList() {
@@ -118,10 +131,54 @@ public class PlaylistActivity extends AppCompatActivity {
                 i.putExtra("artistArray", artistName);
                 i.putExtra("thumbnailArray", thumbnailUrl);
                 i.putExtra("trackArray", trackList);
+                i.putExtra("position",position);
                 startActivity(i);
                 MainActivity.releasePlayer();
             }
         });
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.d("test","inonLongClick");
+                String str=listView.getItemAtPosition(i).toString();
+                showAlert();
+                Log.d("test","long click : " +str);
+                return true;
+            }
+        });
+    }
+
+    AlertDialog myDialog;
+    ArrayList<String> playlistsDialog;
+    CharSequence[] playlistDialogFinal = {};
+
+    private void showAlert() {
+        playlistsDialog = new ArrayList<>();
+        playlistDialogFinal = playlistsDialog.toArray(new CharSequence[playlistsDialog.size()]);
+        AlertDialog.Builder myBuilder = new AlertDialog.Builder(this);
+        playlistsDialog.add("Create A Playlist");
+        db.collection("users").document("123@123.gr").collection("playlists")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                playlistsDialog.add(document.getId());
+                            }
+                            playlistDialogFinal = playlistsDialog.toArray(new CharSequence[playlistsDialog.size()]);
+                            myBuilder.setTitle("Add to playlist").setItems(playlistDialogFinal, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    Toast.makeText(PlaylistActivity.this,playlistDialogFinal[i].toString(),Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                            myDialog=myBuilder.create();
+                            myDialog.show();
+                        } else {
+                            Log.w("ERROR", "Error getting documents.", task.getException());
+                        }}
+                });
     }
 
     class fetchData extends  Thread {
@@ -475,5 +532,15 @@ public class PlaylistActivity extends AppCompatActivity {
             });
 
         }
+    }
+
+    private void setupBottomNavigation(){
+        BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottomNavViewBar);
+        BottomNavigationHelper.setupBottomNavigationView(bottomNavigationViewEx);
+        BottomNavigationHelper.enableNavigation(PlaylistActivity.this,bottomNavigationViewEx);
+
+        Menu menu = bottomNavigationViewEx.getMenu();
+        MenuItem menuItem = menu.getItem(0);
+        menuItem.setChecked(true);
     }
 }

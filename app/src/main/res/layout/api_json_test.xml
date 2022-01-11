@@ -63,4 +63,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/dataList" />
 
+    <RelativeLayout
+        android:id="@+id/rl_footer"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        tools:ignore="MissingConstraints">
+        <include layout="@layout/layout_bottom_navigation_view" />
+    </RelativeLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

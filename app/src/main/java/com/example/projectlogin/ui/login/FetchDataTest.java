@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -20,6 +22,7 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -76,6 +79,7 @@ public class FetchDataTest extends AppCompatActivity {
             String artist = intent.getStringExtra("artist");
             urlFinal = ("https://yma-server.herokuapp.com/artist/"+artist);
         }
+        setupBottomNavigation();
     }
 
     private void initializeDataList() {
@@ -460,5 +464,15 @@ public class FetchDataTest extends AppCompatActivity {
             });
 
         }
+    }
+
+    private void setupBottomNavigation(){
+        BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottomNavViewBar);
+        BottomNavigationHelper.setupBottomNavigationView(bottomNavigationViewEx);
+        BottomNavigationHelper.enableNavigation(FetchDataTest.this,bottomNavigationViewEx);
+
+        Menu menu = bottomNavigationViewEx.getMenu();
+        MenuItem menuItem = menu.getItem(0);
+        menuItem.setChecked(true);
     }
 }

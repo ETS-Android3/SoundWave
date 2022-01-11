@@ -15,14 +15,14 @@
         android:background="#121212"
         tools:context="ui.login.MainActivity">
 
-        <ImageView
-            android:id="@+id/imageMenu"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/ic_menu"
-            app:tint="@color/white"
-            tools:ignore="MissingConstraints" />
+<!--        <ImageView-->
+<!--            android:id="@+id/imageMenu"-->
+<!--            android:layout_width="30dp"-->
+<!--            android:layout_height="30dp"-->
+<!--            android:contentDescription="@string/app_name"-->
+<!--            android:src="@drawable/ic_menu"-->
+<!--            app:tint="@color/white"-->
+<!--            tools:ignore="MissingConstraints" />-->
 
         <TextView
             android:id="@+id/textView"

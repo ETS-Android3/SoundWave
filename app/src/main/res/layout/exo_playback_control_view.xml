@@ -37,16 +37,19 @@
         android:layout_height="30dp"
         android:layout_gravity="center"
         android:layout_marginLeft="170dp"
-        android:src="@drawable/heartliked"
+        app:tint="@color/likeButtonColor"
+        android:src="@drawable/ic_baseline_thumb_up_24"
         android:id="@+id/like"
         />
 
-    <ImageButton android:id="@id/exo_shuffle"
+    <ImageView
+        android:id="@+id/exo_shuffles"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_gravity="center"
         android:layout_marginRight="170dp"
-        />
+        app:tint="@color/white"
+        android:src="@drawable/ic_baseline_shuffle_24"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -66,11 +69,11 @@
             android:textSize="14sp"
             android:textStyle="bold"/>
 
-        <com.google.android.exoplayer2.ui.DefaultTimeBar
-            android:id="@id/exo_progress"
-            android:layout_width="0dp"
-            android:layout_height="26dp"
-            android:layout_weight="1"/>
+<!--        <com.google.android.exoplayer2.ui.DefaultTimeBar-->
+<!--            android:id="@id/exo_progress"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="26dp"-->
+<!--            android:layout_weight="1"/>-->
 
 <!--        <TextView-->
 <!--            android:id="@id/exo_duration"-->
