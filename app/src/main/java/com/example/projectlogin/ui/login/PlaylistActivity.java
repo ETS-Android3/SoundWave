@@ -1,18 +1,22 @@
 package com.example.projectlogin.ui.login;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -81,6 +85,11 @@ public class PlaylistActivity extends AppCompatActivity {
         Intent intent = this.getIntent();
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         imageView = findViewById(R.id.Image);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user!=null)
+        {
+            userEmail= user.getEmail();
+        }
         initializeDataList();
         new fetchData().start();
 
@@ -101,11 +110,6 @@ public class PlaylistActivity extends AppCompatActivity {
         songId = new ArrayList<String>();
         songArrayList = new ArrayList<>();
         db = FirebaseFirestore.getInstance();
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user!=null)
-        {
-            userEmail= user.getEmail();
-        }
 
 
         listAdapter = new ListAdapter(this, songArrayList);
@@ -139,25 +143,28 @@ public class PlaylistActivity extends AppCompatActivity {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Log.d("test","inonLongClick");
-                String str=listView.getItemAtPosition(i).toString();
-                showAlert();
-                Log.d("test","long click : " +str);
+                String songTitle=trackList.get(i);
+                String songArtist = artistName.get(i);
+                String songIdNum = songId.get(i);
+                String songThumbnail = thumbnailUrl.get(i);
+                showAlert(songTitle,songThumbnail,songIdNum,songArtist,userEmail);
                 return true;
             }
         });
     }
 
     AlertDialog myDialog;
+    AlertDialog createDialog;
     ArrayList<String> playlistsDialog;
     CharSequence[] playlistDialogFinal = {};
 
-    private void showAlert() {
+
+    private void showAlert(String songTitle, String songThumbnail, String songIdNum, String songArtist, String userEmail) {
         playlistsDialog = new ArrayList<>();
         playlistDialogFinal = playlistsDialog.toArray(new CharSequence[playlistsDialog.size()]);
         AlertDialog.Builder myBuilder = new AlertDialog.Builder(this);
-        playlistsDialog.add("Create A Playlist");
-        db.collection("users").document("123@123.gr").collection("playlists")
+        playlistsDialog.add("+ Create A Playlist");
+        db.collection("users").document(userEmail).collection("playlists")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -170,7 +177,53 @@ public class PlaylistActivity extends AppCompatActivity {
                             myBuilder.setTitle("Add to playlist").setItems(playlistDialogFinal, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
-                                    Toast.makeText(PlaylistActivity.this,playlistDialogFinal[i].toString(),Toast.LENGTH_SHORT).show();
+                                    if(i==0){
+                                        AlertDialog.Builder createBuilder = new AlertDialog.Builder(PlaylistActivity.this);
+                                        LayoutInflater inflater = PlaylistActivity.this.getLayoutInflater();
+                                        createBuilder.setView(inflater.inflate(R.layout.create_playlist,null)).setPositiveButton("Create and add", new DialogInterface.OnClickListener() {
+
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                Dialog dlg = (Dialog) createDialog;
+                                                EditText etPlaylistTile= (EditText) dlg.findViewById(R.id.playlistName);
+
+                                                String titlePlaylist = etPlaylistTile.getText().toString();
+                                                if(TextUtils.isEmpty(titlePlaylist)){
+                                                    etPlaylistTile.setError("Title cannot be empty");
+                                                    etPlaylistTile.requestFocus();
+                                                }
+                                                else {
+                                                    Map<String, Object> song = new HashMap<>();
+                                                    song.put("artist", songArtist);
+                                                    song.put("title", songTitle);
+                                                    song.put("songId", songIdNum);
+                                                    song.put("thumbnailUrl", songThumbnail);
+                                                    song.put("timestamp", new Timestamp(new Date()));
+                                                    Map<String, Object> initializer = new HashMap<>();
+                                                    initializer.put("init","init");
+                                                    db.collection("users").document(userEmail).collection("playlists").document(titlePlaylist).set(initializer);
+                                                    db.collection("users").document(userEmail).collection("playlists").document(titlePlaylist).collection("songs").document(songTitle).set(song);
+                                                    Toast.makeText(PlaylistActivity.this, "Added to playlist", Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
+                                        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                createDialog.hide();
+                                            }
+                                        });
+                                        createDialog = createBuilder.create();
+                                        createDialog.show();
+                                    }
+                                    else {
+                                        Map<String, Object> song = new HashMap<>();
+                                        song.put("artist", songArtist);
+                                        song.put("title", songTitle);
+                                        song.put("songId", songIdNum);
+                                        song.put("thumbnailUrl", songThumbnail);
+                                        song.put("timestamp", new Timestamp(new Date()));
+                                        db.collection("users").document(userEmail).collection("playlists").document(playlistDialogFinal[i].toString()).collection("songs").document(songTitle).set(song);
+                                        Toast.makeText(PlaylistActivity.this, "Added to playlist", Toast.LENGTH_SHORT).show();                                    }
                                 }
                             });
                             myDialog=myBuilder.create();
