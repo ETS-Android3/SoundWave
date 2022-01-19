@@ -20,16 +20,6 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp">
 
-            <ImageButton
-                android:id="@+id/ImageAvatar"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:layout_marginStart="9dp"
-                android:layout_marginTop="9dp"
-                android:layout_marginEnd="9dp"
-                android:layout_marginBottom="9dp"
-                android:adjustViewBounds="true"
-                android:padding="3dp" />
 
         </RelativeLayout>
 
@@ -45,6 +35,14 @@
             android:textColor="@color/purple_200"
             android:textSize="32sp" />
 
+        <ImageButton
+            android:id="@+id/btn_settings"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="340dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/btnsettings" />
+
 
     </RelativeLayout>
 
@@ -53,7 +51,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/rellay1"
-        android:orientation="horizontal"/>
+        android:orientation="horizontal" />
 
 
     <RelativeLayout
@@ -70,6 +68,31 @@
             android:layout_marginTop="20dp"
             android:layout_marginRight="30dp"
             android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/layout_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:orientation="vertical"
+                android:weightSum="2">
+
+                <Button
+                    android:id="@+id/btnChoose"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Choose" />
+
+                <!--Button for uploading image-->
+                <Button
+                    android:id="@+id/btnUpload"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Upload" />
+            </LinearLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -163,6 +186,22 @@
 
         </LinearLayout>
 
+        <ImageView
+            android:id="@+id/ImageAvatar"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_marginLeft="100dp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/btnSettings"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        tools:ignore="MissingConstraints">
+
+        <include layout="@layout/layout_bottom_navigation_view" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -171,8 +210,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         tools:ignore="MissingConstraints">
+
         <include layout="@layout/layout_bottom_navigation_view" />
     </RelativeLayout>
-
 
 </RelativeLayout>
