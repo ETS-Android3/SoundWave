@@ -13,4 +13,8 @@
         android:id="@+id/profileActivity"
         android:name="com.example.projectlogin.ui.login.ProfileActivity"
         android:label="ProfileActivity" />
+    <activity
+        android:id="@+id/searchActivity"
+        android:name="com.example.projectlogin.ui.login.SearchResultsActivity"
+        android:label="ProfileActivity" />
 </navigation>

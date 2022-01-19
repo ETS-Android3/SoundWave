@@ -1,210 +1,127 @@
-package com.example.projectlogin.ui.login;
+package com.example.projectlogin.ui.login
 
-import android.app.Activity;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Bundle;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
+import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
+import com.google.android.exoplayer2.ui.PlayerView
+import android.widget.TextView
+import android.os.Bundle
+import com.example.projectlogin.R
+import android.content.Intent
+import com.example.projectlogin.ui.login.FetchDataTest
+import com.squareup.picasso.Picasso
+import com.example.projectlogin.ui.login.MainActivity
+import com.google.android.exoplayer2.C
+import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.SimpleExoPlayer
+import com.google.firebase.auth.FirebaseUser
+import com.example.projectlogin.ui.login.LoginActivity
+import android.app.Activity
+import android.view.MenuItem
+import android.view.View
+import android.widget.ImageView
+import com.example.projectlogin.ui.login.ProfileActivity
+import com.example.projectlogin.ui.login.HomeActivity
+import com.example.projectlogin.ui.login.PlaylistActivity
+import com.example.projectlogin.ui.login.SettingsActivity
+import com.google.android.exoplayer2.MediaItem
+import java.util.ArrayList
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
+class MainActivity : AppCompatActivity() {
+    var mAuth: FirebaseAuth? = null
+    var playerView: PlayerView? = null
+    var thumbnail: String? = null
+    var imageProfile: ImageView? = null
+    var albumImage: ImageView? = null
+    var songTitle: TextView? = null
+    var songArtist: TextView? = null
+    var songIdArray: ArrayList<String>? = null
+    var songArtistArray: ArrayList<String>? = null
+    var thumbnailArray: ArrayList<String>? = null
+    var songTitleArray: ArrayList<String>? = null
+    var positionPlaylist = 0
+    var listLength = 0
+    var lastWindowIndex = 0
 
-import com.example.projectlogin.R;
-import com.google.android.exoplayer2.C;
-import com.google.android.exoplayer2.MediaItem;
-import com.google.android.exoplayer2.Player;
-import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.ui.PlayerView;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.squareup.picasso.Picasso;
-
-import java.util.ArrayList;
-
-public class MainActivity extends AppCompatActivity  {
-
-
-    FirebaseAuth mAuth;
-    public static SimpleExoPlayer simpleExoPlayer;
-    PlayerView playerView;
-    String thumbnail;
-    ImageView imageProfile;
-    ImageView albumImage;
-    TextView songTitle, songArtist;
-    ArrayList<String> songIdArray;
-    ArrayList<String> songArtistArray;
-    ArrayList<String> thumbnailArray;
-    ArrayList<String> songTitleArray;
-    int positionPlaylist;
-    int listLength;
-    int lastWindowIndex = 0;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        albumImage = findViewById(R.id.AlbumImage);
-        Intent intent = this.getIntent();
-        songIdArray = new ArrayList<>();
-        songArtistArray = new ArrayList<>();
-        thumbnailArray = new ArrayList<>();
-        songTitleArray = new ArrayList<>();
-        positionPlaylist=0;
-        listLength=0;
-        songTitle = findViewById (R.id.songTitle);
-        songArtist = findViewById (R.id.songArtist);
-
-        songArtist.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(MainActivity.this,FetchDataTest.class);
-                i.putExtra("artist",songArtist.getText().toString());
-                startActivity(i);
-            }
-        });
-
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        albumImage = findViewById(R.id.AlbumImage)
+        val intent = this.intent
+        songIdArray = ArrayList()
+        songArtistArray = ArrayList()
+        thumbnailArray = ArrayList()
+        songTitleArray = ArrayList()
+        positionPlaylist = 0
+        listLength = 0
+        songTitle = findViewById(R.id.video_overlay_title)
+        songArtist = findViewById(R.id.songArtist)
+        songArtist?.setOnClickListener(View.OnClickListener {
+            val i = Intent(this@MainActivity, FetchDataTest::class.java)
+            i.putExtra("artist", songArtist!!.getText().toString())
+            startActivity(i)
+        })
         if (intent != null) {
-            String track = intent.getStringExtra("track");
-            String artist = intent.getStringExtra("artist");
-            thumbnail = intent.getStringExtra("thumbnail");
-            String replacedThumbnail = thumbnail.replaceAll("(=).*"," ");
-            songTitle.setText(track);
-            songArtist.setText(artist);
-            positionPlaylist= (int) intent.getSerializableExtra("position");
-            Picasso.get().load(replacedThumbnail).placeholder(R.drawable.missingbackground).error(R.drawable.missingbackground).fit().centerCrop().into(albumImage);
-            listLength = (int) intent.getSerializableExtra("listLength");
-            songIdArray = (ArrayList<String>) intent.getSerializableExtra("songIdArray");
-            songArtistArray = (ArrayList<String>) intent.getSerializableExtra("artistArray");
-            thumbnailArray = (ArrayList<String>) intent.getSerializableExtra("thumbnailArray");
-            songTitleArray = (ArrayList<String>) intent.getSerializableExtra("trackArray");
+            val track = intent.getStringExtra("track")
+            val artist = intent.getStringExtra("artist")
+            thumbnail = intent.getStringExtra("thumbnail")
+            val replacedThumbnail = thumbnail!!.replace("(=).*".toRegex(), " ")
+            songTitle?.setText(track)
+            songArtist?.setText(artist)
+            positionPlaylist = intent.getSerializableExtra("position") as Int
+            Picasso.get().load(replacedThumbnail).placeholder(R.drawable.missingbackground)
+                .error(R.drawable.missingbackground).fit().centerCrop().into(albumImage)
+            listLength = intent.getSerializableExtra("listLength") as Int
+            songIdArray = intent.getSerializableExtra("songIdArray") as ArrayList<String>?
+            songArtistArray = intent.getSerializableExtra("artistArray") as ArrayList<String>?
+            thumbnailArray = intent.getSerializableExtra("thumbnailArray") as ArrayList<String>?
+            songTitleArray = intent.getSerializableExtra("trackArray") as ArrayList<String>?
         }
-
-        initPlayer();
-        for (int i=0; i < listLength; i++){
-            simpleExoPlayer.addMediaItem(i,MediaItem.fromUri("https://stream-server-youtube.herokuapp.com/"+songIdArray.get(i)));
+        initPlayer()
+        for (i in 0 until listLength) {
+            simpleExoPlayer!!.addMediaItem(
+                i,
+                MediaItem.fromUri("https://stream-server-youtube.herokuapp.com/" + songIdArray!![i])
+            )
         }
-        simpleExoPlayer.seekTo(positionPlaylist,C.TIME_UNSET);
-
-
-        simpleExoPlayer.addListener(new Player.Listener() {
+        simpleExoPlayer!!.seekTo(positionPlaylist, C.TIME_UNSET)
+        simpleExoPlayer!!.addListener(object : Player.Listener {
             //@Override
-            public void onPositionDiscontinuity(int DISCONTINUITY_REASON_SKIP){
-                int latestWindowIndex = simpleExoPlayer.getCurrentWindowIndex();
-                if (latestWindowIndex != lastWindowIndex){
-                    lastWindowIndex = latestWindowIndex;
-                    songTitle.setText(songTitleArray.get(latestWindowIndex));
-                    songArtist.setText(songArtistArray.get(latestWindowIndex));
-                    thumbnail = thumbnailArray.get(latestWindowIndex);
-                    String replacedThumbnail = thumbnail.replaceAll("(=).*"," ");
-                    Picasso.get().load(replacedThumbnail).placeholder(R.drawable.missingbackground).error(R.drawable.missingbackground).fit().centerCrop().into(albumImage);
+            override fun onPositionDiscontinuity(DISCONTINUITY_REASON_SKIP: Int) {
+                val latestWindowIndex = simpleExoPlayer!!.currentWindowIndex
+                if (latestWindowIndex != lastWindowIndex) {
+                    lastWindowIndex = latestWindowIndex
+                    songTitle?.setText(songTitleArray!![latestWindowIndex])
+                    songArtist?.setText(songArtistArray!![latestWindowIndex])
+                    thumbnail = thumbnailArray!![latestWindowIndex]
+                    val replacedThumbnail = thumbnail!!.replace("(=).*".toRegex(), " ")
+                    Picasso.get().load(replacedThumbnail).placeholder(R.drawable.missingbackground)
+                        .error(R.drawable.missingbackground).fit().centerCrop().into(albumImage)
                 }
             }
-        });
-
-        mAuth = FirebaseAuth.getInstance();
-
-//        final DrawerLayout drawerLayout = findViewById(R.id.drawerLayout);
-//
-//        NavigationView navView = findViewById(R.id.navigationView);
-//        navView.getMenu().clear();
-//        navView.inflateMenu(R.menu.navigation_menu);
-//
-//        findViewById(R.id.imageMenu).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                drawerLayout.openDrawer(GravityCompat.START);
-//
-//            }
-//        });
+        })
+        mAuth = FirebaseAuth.getInstance()
 
     }
 
-
-    public static void releasePlayer() {
-        if (simpleExoPlayer != null) {
-            simpleExoPlayer.setPlayWhenReady(false);
-            simpleExoPlayer.stop();
-            simpleExoPlayer.seekTo(0);
-        }
+    fun initPlayer() {
+        playerView = findViewById(R.id.playerView)
+        playerView?.setControllerShowTimeoutMs(0)
+        playerView?.setCameraDistance(30f)
+        simpleExoPlayer = SimpleExoPlayer.Builder(this).build()
+        playerView?.setPlayer(simpleExoPlayer)
+        simpleExoPlayer!!.prepare()
+        simpleExoPlayer!!.playWhenReady = true
     }
 
-
-    public void initPlayer(){
-        playerView = findViewById(R.id.playerView);
-        playerView.setControllerShowTimeoutMs(0);
-        playerView.setCameraDistance(30);
-        simpleExoPlayer = new SimpleExoPlayer.Builder(this).build();
-        playerView.setPlayer(simpleExoPlayer);
-        simpleExoPlayer.prepare();
-        simpleExoPlayer.setPlayWhenReady(true);
-    }
-
-
-    @Override
-
-    protected void onStart() {
-
-        super.onStart();
-        FirebaseUser user = mAuth.getCurrentUser();
-        if (user == null){
-            startActivity(new Intent(MainActivity.this, LoginActivity.class));
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1000) {
-            if (resultCode == Activity.RESULT_OK) {
-                Uri imageUri = data.getData();
-                imageProfile.setImageURI(imageUri);
+    companion object {
+        var simpleExoPlayer: SimpleExoPlayer? = null
+        @JvmStatic
+        fun releasePlayer() {
+            if (simpleExoPlayer != null) {
+                simpleExoPlayer!!.playWhenReady = false
+                simpleExoPlayer!!.stop()
+                simpleExoPlayer!!.seekTo(0)
             }
         }
-
     }
-
-    public void Profileredirect(View v){
-        ImageView imgFavorite = findViewById(R.id.imageProfile);
-        imgFavorite.setClickable(true);
-        imgFavorite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, ProfileActivity.class));
-                simpleExoPlayer.stop();
-            }
-        });
-    }
-    public void btnHome(MenuItem item) {
-        startActivity(new Intent(MainActivity.this, HomeActivity.class));
-        simpleExoPlayer.stop();
-    }
-    public void btnSearch(MenuItem item) {
-        startActivity(new Intent(MainActivity.this, FetchDataTest.class));
-        simpleExoPlayer.stop();
-    }
-    public void btnYourlibrary(MenuItem item) {
-        startActivity(new Intent(MainActivity.this, PlaylistActivity.class));
-        simpleExoPlayer.stop();
-    }
-    public void btnSettings(MenuItem item) {
-        startActivity(new Intent(MainActivity.this, SettingsActivity.class));
-        simpleExoPlayer.stop();
-    }
-    public void btnProfile(MenuItem item) {
-        startActivity(new Intent(MainActivity.this, ProfileActivity.class));
-        simpleExoPlayer.stop();
-
-    }
-    public void btnLogout(MenuItem item) {
-        FirebaseAuth.getInstance().signOut();
-        releasePlayer();
-        startActivity(new Intent(MainActivity.this, LoginActivity.class));
-    }
-
 }
-
-
-

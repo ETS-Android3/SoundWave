@@ -318,6 +318,8 @@
 
     </GridLayout>
 
+
+
     <RelativeLayout
         android:id="@+id/rl_footer"
         android:layout_width="fill_parent"
@@ -326,6 +328,10 @@
         tools:ignore="MissingConstraints">
     <include layout="@layout/layout_bottom_navigation_view" />
     </RelativeLayout>
+
+
+
+
 
     <!--
         <com.google.android.material.bottomnavigation.BottomNavigationView

@@ -33,10 +33,10 @@ public class BottomNavigationHelper {
                         context.startActivity(intent1);
                        break;
 
-//                    case R.id.ic_search:
-//                        Intent intent2  = new Intent(context, SearchActivity.class);//ACTIVITY_NUM = 1
-//                        context.startActivity(intent2);
-//                        break;
+                    case R.id.searchActivity:
+                        Intent intent2  = new Intent(context, SearchActivity.class);//ACTIVITY_NUM = 1
+                        context.startActivity(intent2);
+                        break;
 //
 //                    case R.id.ic_circle:
 //                       Intent intent3 = new Intent(context, ShareActivity.class);//ACTIVITY_NUM = 2
