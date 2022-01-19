@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -20,6 +22,7 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -60,6 +63,7 @@ public class FetchDataTest extends AppCompatActivity {
     String urlFinal;
     FirebaseFirestore db;
     String userEmail;
+    String desc;
 
 
     @Override
@@ -76,6 +80,7 @@ public class FetchDataTest extends AppCompatActivity {
             String artist = intent.getStringExtra("artist");
             urlFinal = ("https://yma-server.herokuapp.com/artist/"+artist);
         }
+        setupBottomNavigation();
     }
 
     private void initializeDataList() {
@@ -113,6 +118,12 @@ public class FetchDataTest extends AppCompatActivity {
                 song.put("title", trackList.get(position));
                 song.put("timestamp", new Timestamp(new Date()));
                 db.collection("users").document(userEmail).collection("stats").document("lastListened").collection("listenHistory").document(trackList.get(position)).set(song);
+                i.putExtra("listLength",trackList.size());
+                i.putExtra("songIdArray",songId);
+                i.putExtra("artistArray", artistName);
+                i.putExtra("thumbnailArray", thumbnailUrl);
+                i.putExtra("trackArray", trackList);
+                i.putExtra("position",position);
                 startActivity(i);
                 MainActivity.releasePlayer();
             }
@@ -397,7 +408,7 @@ public class FetchDataTest extends AppCompatActivity {
 
                 if (!data.isEmpty()) {
                     JSONObject jsonObject = new JSONObject(data);
-                    String desc = jsonObject.getString("description");
+                    desc = jsonObject.getString("description");
                     JSONObject dataLong = jsonObject.getJSONObject("songs");
                     JSONArray data = dataLong.getJSONArray("results");
 
@@ -435,8 +446,9 @@ public class FetchDataTest extends AppCompatActivity {
                         @Override
                         public void run() {
                             Picasso.get().load(artistThumbnailUrl.get(0)).placeholder(R.drawable.missingbackground).error(R.drawable.missingbackground).fit().centerCrop().into(imageView);
-
+                            TextView description = findViewById(R.id.TextDescription);
                             TextView artist = findViewById(R.id.TextViewTest);
+                            description.setText(desc);
                             artist.setText(artistName.get(0));
                         }
                     });
@@ -460,5 +472,15 @@ public class FetchDataTest extends AppCompatActivity {
             });
 
         }
+    }
+
+    private void setupBottomNavigation(){
+        BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottomNavViewBar);
+        BottomNavigationHelper.setupBottomNavigationView(bottomNavigationViewEx);
+        BottomNavigationHelper.enableNavigation(FetchDataTest.this,bottomNavigationViewEx);
+
+        Menu menu = bottomNavigationViewEx.getMenu();
+        MenuItem menuItem = menu.getItem(0);
+        menuItem.setChecked(true);
     }
 }
