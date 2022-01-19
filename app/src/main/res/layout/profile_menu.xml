@@ -195,16 +195,6 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/btnSettings"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        tools:ignore="MissingConstraints">
-
-        <include layout="@layout/layout_bottom_navigation_view" />
-    </RelativeLayout>
-
-    <RelativeLayout
         android:id="@+id/rl_footer"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
