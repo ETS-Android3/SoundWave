@@ -20,31 +20,28 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp">
 
-            <ImageButton
-                android:id="@+id/ImageAvatar"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:layout_marginStart="9dp"
-                android:layout_marginTop="9dp"
-                android:layout_marginEnd="9dp"
-                android:layout_marginBottom="9dp"
-                android:adjustViewBounds="true"
-                android:padding="3dp" />
 
         </RelativeLayout>
 
         <TextView
-            android:id="@+id/tv_name"
+            android:id="@+id/Username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/imgUser"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="15sp"
             android:fontFamily="sans-serif-light"
-            android:text="David"
+            android:text=""
             android:textColor="@color/purple_200"
-            android:textSize="32sp"
-            />
+            android:textSize="32sp" />
+
+        <ImageButton
+            android:id="@+id/btn_settings"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="340dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/btnsettings" />
 
 
     </RelativeLayout>
@@ -54,7 +51,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/rellay1"
-        android:orientation="horizontal"/>
+        android:orientation="horizontal" />
 
 
     <RelativeLayout
@@ -73,6 +70,31 @@
             android:orientation="vertical">
 
             <LinearLayout
+                android:id="@+id/layout_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:orientation="vertical"
+                android:weightSum="2">
+
+                <Button
+                    android:id="@+id/btnChoose"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Choose" />
+
+                <!--Button for uploading image-->
+                <Button
+                    android:id="@+id/btnUpload"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Upload" />
+            </LinearLayout>
+
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -85,10 +107,11 @@
                     android:textSize="13sp" />
 
                 <TextView
+                    android:id="@+id/Email"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
-                    android:text="nikoszannakis14@gmail.com"
+                    android:text=""
                     android:textColor="#FFFF"
                     android:textSize="18sp" />
 
@@ -114,10 +137,11 @@
                     android:textSize="13sp" />
 
                 <TextView
+                    android:id="@+id/Phone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
-                    android:text="+30-6978418507"
+                    android:text=""
                     android:textColor="#FFFF"
                     android:textSize="18sp" />
 
@@ -129,67 +153,65 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Instagram"
-                    android:textColor="@color/purple_200"
-                    android:textSize="13sp" />
+            <!--            <LinearLayout-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginTop="15dp"-->
+            <!--                android:orientation="vertical">-->
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-light"
-                    android:text="nikoszannakis14@gmail.com"
-                    android:textColor="#FFFF"
-                    android:textSize="18sp" />
+            <!--                <TextView-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:text="Facebook"-->
+            <!--                    android:textColor="@color/purple_200"-->
+            <!--                    android:textSize="13sp" />-->
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="15dp"
-                    android:background="#FFFF" />
+            <!--                <TextView-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:fontFamily="sans-serif-light"-->
+            <!--                    android:text="nikoszannakis14@gmail.gr"-->
+            <!--                    android:textColor="#FFFF"-->
+            <!--                    android:textSize="18sp" />-->
 
-            </LinearLayout>
+            <!--                <View-->
+            <!--                    android:layout_width="match_parent"-->
+            <!--                    android:layout_height="1dp"-->
+            <!--                    android:layout_marginTop="15dp"-->
+            <!--                    android:background="#FFFF" />-->
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Facebook"
-                    android:textColor="@color/purple_200"
-                    android:textSize="13sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-light"
-                    android:text="nikoszannakis14@gmail.gr"
-                    android:textColor="#FFFF"
-                    android:textSize="18sp" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="15dp"
-                    android:background="#FFFF" />
-
-            </LinearLayout>
+            <!--            </LinearLayout>-->
 
 
         </LinearLayout>
 
+        <ImageView
+            android:id="@+id/ImageAvatar"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_marginLeft="100dp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/btnSettings"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        tools:ignore="MissingConstraints">
+
+        <include layout="@layout/layout_bottom_navigation_view" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_footer"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        tools:ignore="MissingConstraints">
+
+        <include layout="@layout/layout_bottom_navigation_view" />
     </RelativeLayout>
 
 </RelativeLayout>
