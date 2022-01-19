@@ -55,7 +55,7 @@ public class ProfileActivity extends AppCompatActivity {
     private Button btnSelect, btnUpload;
     private Uri filePath;
     private final int PICK_IMAGE_REQUEST = 22;
-    Button btnsettings;
+    
 
     FirebaseStorage storage;
     StorageReference storageReference;
@@ -286,8 +286,3 @@ public class ProfileActivity extends AppCompatActivity {
         menuItem.setChecked(true);
     }
 }
-
-
-
-
-

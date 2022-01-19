@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:background="#121212"
     tools:context=".ui.login.FetchDataTest">
 
@@ -14,6 +18,7 @@
         app:layout_constraintBottom_toTopOf="@id/PlaylistTitle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintWidth_percent=".5"
+        android:src="@drawable/topsongs"
         android:id="@+id/Image"
         />
 
@@ -23,7 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:textColor="@color/white"
-        android:text="Eminem"
+        android:text="Top 100 Songs"
         android:textSize="30dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -37,7 +42,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:textColor="@color/white"
-        android:text="Popular Songs"
+        android:text="100 Songs - Duration 6 hours and 32 Minutes"
         android:textSize="17dp"
         android:paddingTop="15dp"
         android:textStyle="bold"
@@ -49,24 +54,20 @@
     <ListView
         android:id="@+id/dataList"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/TextViewTopSongs"
-        tools:listitem="@layout/list_adapter_song" />
+        app:layout_constraintBottom_toTopOf="@+id/nav_bot"
+        tools:listitem="@layout/list_adapter_song"
+        android:layout_height="395dp"/>
 
-    <TextView
-        android:id="@+id/TextViewAlbums"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/rl_footer"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:textColor="@color/white"
-        android:text="Albums"
-        android:textSize="17dp"
-        android:paddingTop="15dp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/dataList" />
+        android:layout_alignParentBottom="true"
+        tools:ignore="MissingConstraints">
+        <include layout="@layout/layout_bottom_navigation_view" />
+    </RelativeLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
