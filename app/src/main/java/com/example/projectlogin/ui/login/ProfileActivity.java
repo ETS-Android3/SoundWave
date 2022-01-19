@@ -16,10 +16,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.bumptech.glide.Glide;
 import com.example.projectlogin.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -38,7 +38,6 @@ import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
-import java.util.UUID;
 
 
 public class ProfileActivity extends AppCompatActivity {
@@ -104,8 +103,6 @@ public class ProfileActivity extends AppCompatActivity {
         emailText = findViewById(R.id.Email);
         phoneText = findViewById(R.id.Phone);
         userNameText = findViewById(R.id.Username);
-        setupBottomNavigation();
-
         // initialise views
         btnSelect = findViewById(R.id.btnChoose);
         btnUpload = findViewById(R.id.btnUpload);
@@ -154,6 +151,8 @@ public class ProfileActivity extends AppCompatActivity {
                 // Handle any errors
             }
         });
+
+        setupBottomNavigation();
     }
 
 
