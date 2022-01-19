@@ -89,6 +89,31 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.login.SearchResultsActivity"
+            android:exported="true"
+            android:label="ProjectLogin">
+            <intent-filter>
+                <action android:name="android.intent.action.SearchResultsActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.login.SearchActivity"
+            android:exported="true"
+            android:label="ProjectLogin">
+            <intent-filter>
+                <action android:name="android.intent.action.SearchActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <meta-data
+            android:name="com.google.android.actions"
+            android:resource="@xml/video_overlay_motionscene"/>
+
     </application>
 
 

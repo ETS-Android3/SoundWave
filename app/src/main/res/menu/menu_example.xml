@@ -3,7 +3,7 @@
     <item android:id="@+id/homeActivity"
         android:title="Home"
         android:icon="@drawable/ic_baseline_home_24"/>
-    <item android:id="@+id/idBtnSettings"
+    <item android:id="@+id/searchActivity"
         android:title="Search"
         android:icon="@drawable/ic_baseline_search_24"/>
     <item android:id="@+id/profileActivity"

@@ -40,13 +40,19 @@
         <entry key="..\:/Users/pc/AndroidStudioProjects/ProjectLogin/app/src/main/res/layout/api_json_test.xml" value="0.2" />
         <entry key="..\:/Users/pc/AndroidStudioProjects/ProjectLogin/app/src/main/res/layout/create_playlist.xml" value="0.20208333333333334" />
         <entry key="..\:/Users/pc/AndroidStudioProjects/ProjectLogin/app/src/main/res/layout/exo_playback_control_view.xml" value="0.18541666666666667" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/ProjectLogin/app/src/main/res/layout/fragment_blank.xml" value="0.13802083333333334" />
         <entry key="..\:/Users/pc/AndroidStudioProjects/ProjectLogin/app/src/main/res/layout/layout_bottom_nav_color.xml" value="0.1" />
         <entry key="..\:/Users/pc/AndroidStudioProjects/ProjectLogin/app/src/main/res/layout/layout_bottom_navigation_view.xml" value="0.16304347826086957" />
         <entry key="..\:/Users/pc/AndroidStudioProjects/ProjectLogin/app/src/main/res/layout/layout_navigation_header.xml" value="0.18541666666666667" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/ProjectLogin/app/src/main/res/layout/list_adapter_album.xml" value="0.22780797101449277" />
         <entry key="..\:/Users/pc/AndroidStudioProjects/ProjectLogin/app/src/main/res/layout/list_adapter_song.xml" value="0.25" />
         <entry key="..\:/Users/pc/AndroidStudioProjects/ProjectLogin/app/src/main/res/layout/main_view.xml" value="0.22" />
         <entry key="..\:/Users/pc/AndroidStudioProjects/ProjectLogin/app/src/main/res/layout/profile_menu.xml" value="0.33" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/ProjectLogin/app/src/main/res/layout/search_activity.xml" value="0.25" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/ProjectLogin/app/src/main/res/layout/search_results_activity.xml" value="0.21" />
         <entry key="..\:/Users/pc/AndroidStudioProjects/ProjectLogin/app/src/main/res/layout/settings_activity.xml" value="0.18541666666666667" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/ProjectLogin/app/src/main/res/layout/video_overlay_fullscreen.xml" value="0.20260416666666667" />
+        <entry key="..\:/Users/pc/AndroidStudioProjects/ProjectLogin/app/src/main/res/layout/video_overlay_small.xml" value="0.20260416666666667" />
         <entry key="..\:/Users/pc/AndroidStudioProjects/ProjectLogin/app/src/main/res/menu/menu_example.xml" value="0.18802083333333333" />
         <entry key="..\:/Users/pc/AndroidStudioProjects/ProjectLogin/app/src/main/res/menu/navigation_menu.xml" value="0.33796296296296297" />
       </map>

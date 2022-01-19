@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'com.google.gms.google-services'
+    id 'kotlin-android'
 }
 
 android {
@@ -8,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.projectlogin"
-        minSdk 21
+        minSdk 28
         targetSdk 31
         versionCode 1
         versionName "1.0"
@@ -35,6 +36,9 @@ android {
     buildFeatures {
         viewBinding true
     }
+    dataBinding {
+        enabled = true
+    }
 }
 
 dependencies {
@@ -55,6 +59,7 @@ dependencies {
     implementation 'com.google.android.exoplayer:exoplayer:2.16.0'
     implementation 'androidx.preference:preference:1.1.1'
     implementation 'com.google.firebase:firebase-firestore:24.0.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.google.firebase:firebase-storage:20.0.0'
     implementation 'com.google.firebase:firebase-database:20.0.3'
     testImplementation 'junit:junit:4.+'
