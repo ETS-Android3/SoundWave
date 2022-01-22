@@ -26,7 +26,8 @@
             android:textStyle="bold"
             android:textColor="@color/white"
             android:gravity="center_horizontal"
-            android:layout_marginTop="110dp"/>
+            android:layout_marginTop="100dp"
+            android:layout_marginLeft="10dp" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
@@ -124,5 +125,11 @@
         </LinearLayout>
 
     </LinearLayout>
-
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginLeft="125dp"
+        android:layout_marginTop="-670dp"
+        android:src="@drawable/soundwave_logo_transparent" />
 </LinearLayout>

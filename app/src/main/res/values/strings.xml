@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ProjectLogin</string>
+    <string name="app_name">SoundWave</string>
 
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
