@@ -43,11 +43,22 @@ It has been made from a collective of students from International Hellenic Unive
 | :-------- | :------- | :-------------------------------- |
 | `PlaylistId`      | `string` | **Required**. Retrieves songs and information about them from playlists hosted on Youtube Music |
 
+#### Search
+
+```http
+  GET /search/${query}
+```
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `query`      | `string` | **Required**. Retrieves search results that would normally be shown to a user on Youtube Music |
+
 #### Cloud Firestore
 
-Used to save user information (like e-mail, name and phone number). Also stores listen history and liked songs for each user individually.
-
-
+Used to save user information (like e-mail, name and phone number). 
+Stores listen history and liked songs for each user individually.
+Stores user created playlists and songs added to them.
+Stores curated playlists that are shown on the search page.
 
 ## Testing
 
@@ -57,7 +68,7 @@ Tests are saved to the local directory of the application. Built using `JUnit4` 
 
 ## Contributing
 
-Contributions are not welcome :(
+Contributions are closed. :(
 
 This is a university project and therefore we do not accept the help, assistance and improvements others may want to offer at this time unfortunatelly.
 
