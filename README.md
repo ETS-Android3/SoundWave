@@ -36,7 +36,7 @@ It has been made from a collective of students from International Hellenic Unive
 #### Get Album
 
 ```http
-  GET /artist/${browseId}
+  GET /album/${browseId}
 ```
 
 | Parameter | Type     | Description                |
