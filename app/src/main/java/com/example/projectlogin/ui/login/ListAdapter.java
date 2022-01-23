@@ -67,11 +67,9 @@ public class ListAdapter extends ArrayAdapter<Song> {
                 user.put("thumbnailUrl",song.imageId);
                 db.collection("users").document(userEmail).collection("playlists").document("likedSongs").collection("songs").document(song.name).set(user);
                 Toast.makeText(context, "Added to liked songs!" , Toast.LENGTH_SHORT ).show();
-                //Picasso.get().load(R.drawable.heartliked).placeholder(R.drawable.heart).error(R.drawable.heart).fit().centerCrop().into(btnAction);
             }
         });
 
-//        imageView.;
         userName.setText(song.name);
         lastMsg.setText(song.lastMessage);
         Picasso.get().load(song.imageId).placeholder(R.drawable.missingbackground).error(R.drawable.missingbackground).fit().centerCrop().into(imageView);

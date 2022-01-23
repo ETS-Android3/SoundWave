@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:fillViewport="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -12,7 +17,7 @@
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="250sp"
+        android:layout_height="180sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toTopOf="@id/TextViewTest"
         android:id="@+id/Image"
@@ -24,7 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:textColor="@color/white"
-        android:text="BTSDAS"
+        android:text=""
         android:textSize="30dp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -39,7 +44,7 @@
         android:layout_marginRight="15dp"
         android:layout_marginLeft="15dp"
         android:textColor="@color/white"
-        android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+        android:text=""
         android:textSize="15dp"
         android:textStyle="italic"
         app:layout_constraintTop_toBottomOf="@id/TextViewTest"
@@ -69,7 +74,7 @@
             android:id="@+id/dataList"
             android:nestedScrollingEnabled="true"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="400dp"
             app:layout_constraintBottom_toTopOf="@id/TextViewAlbums"
             app:layout_constraintTop_toBottomOf="@id/TextViewTopSongs"
             tools:listitem="@layout/list_adapter_song" />
@@ -87,21 +92,23 @@
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/dataList"
-        app:layout_constraintBottom_toTopOf="@+id/rl_footer"/>
+        app:layout_constraintBottom_toTopOf="@+id/dataListAlbum"/>
+    <ListView
+        android:id="@+id/dataListAlbum"
+        android:nestedScrollingEnabled="true"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="50dp"
+        android:layout_height="400dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/TextViewAlbums"
+        tools:listitem="@layout/list_adapter_album" />
 
-    <RelativeLayout
-        android:id="@+id/rl_footer"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        app:layout_constraintTop_toBottomOf="@+id/TextViewAlbums"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
 
-        <include layout="@layout/layout_bottom_navigation_view" />
-    </RelativeLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
-</ScrollView>
+    </ScrollView>
+<include
+layout="@layout/layout_bottom_navigation_view"/>
+</RelativeLayout>

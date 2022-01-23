@@ -6,6 +6,9 @@
     <item android:id="@+id/searchActivity"
         android:title="Search"
         android:icon="@drawable/ic_baseline_search_24"/>
+    <item android:id="@+id/libraryActivity"
+        android:title="Library"
+        android:icon="@drawable/ic_baseline_library_music_24"/>
     <item android:id="@+id/profileActivity"
         android:title="Profile"
         android:icon="@drawable/ic_baseline_person_24"/>

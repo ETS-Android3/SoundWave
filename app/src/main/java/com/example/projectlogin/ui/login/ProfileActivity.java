@@ -49,6 +49,7 @@ public class ProfileActivity extends AppCompatActivity {
     FirebaseAuth mAuth;
     FirebaseFirestore db;
     String userEmail;
+    Button btnSignOut;
     ProgressDialog progressDialog;
     int SELECT_PICTURE = 200;
     private Button btnSelect, btnUpload;
@@ -106,6 +107,7 @@ public class ProfileActivity extends AppCompatActivity {
         // initialise views
         btnSelect = findViewById(R.id.btnChoose);
         btnUpload = findViewById(R.id.btnUpload);
+        btnSignOut = findViewById(R.id.btnSignOut);
 
 
         storage = FirebaseStorage.getInstance();
@@ -124,6 +126,16 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 uploadImage();
+            }
+        });
+
+        btnSignOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseAuth.getInstance().signOut();
+                Intent i = new Intent(ProfileActivity.this,LoginActivity.class);
+                startActivity(i);
+                finish();
             }
         });
 
@@ -281,7 +293,7 @@ public class ProfileActivity extends AppCompatActivity {
         BottomNavigationHelper.enableNavigation(ProfileActivity.this,bottomNavigationViewEx);
 
         Menu menu = bottomNavigationViewEx.getMenu();
-        MenuItem menuItem = menu.getItem(2);
+        MenuItem menuItem = menu.getItem(3);
         menuItem.setChecked(true);
     }
 }

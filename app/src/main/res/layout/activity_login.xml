@@ -9,17 +9,25 @@
     android:padding="24dp"
     tools:context="ui.login.LoginActivity">
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center_horizontal"
+        android:baselineAligned="false"
+        android:layout_marginTop="25dp"
+        android:src="@drawable/soundwave_logo_transparent" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:layout_marginTop="25dp"
         android:orientation="vertical">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="100dp"
+            android:layout_marginVertical="20dp"
             android:gravity="center_horizontal"
             android:text="Login"
             android:textColor="@color/white"
@@ -31,12 +39,14 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:counterTextColor="@color/black"
             app:boxBackgroundColor="#FFFFFF">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etLoginEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/black"
                 android:hint="Email"
                 android:inputType="textEmailAddress" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -46,6 +56,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:counterTextColor="@color/black"
             android:layout_marginTop="24dp"
             app:boxBackgroundColor="#FFFFFF">
 
@@ -53,6 +64,7 @@
                 android:id="@+id/etLoginPass"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/black"
                 android:hint="Password"
                 android:inputType="textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -63,7 +75,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="48dp"
             android:backgroundTint="#A277D7"
-            android:text="Login" />
+            android:text="Login"
+            android:textColor="@color/white"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -92,14 +105,5 @@
         </LinearLayout>
 
     </LinearLayout>
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginLeft="125dp"
-        android:layout_marginTop="-670dp"
-        android:baselineAligned="false"
-        android:src="@drawable/soundwave_logo_transparent" />
 
 </LinearLayout>

@@ -1,27 +1,41 @@
 package com.example.projectlogin.ui.login;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.projectlogin.R;
 import com.example.projectlogin.databinding.ActivityMainBinding;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.squareup.picasso.Picasso;
 
@@ -38,7 +52,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
-
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -47,15 +60,22 @@ import java.util.Random;
 
 public class FetchDataTest extends AppCompatActivity {
 
-    Button button;
     ListView listView;
+    ListView albumListView;
     ActivityMainBinding binding;
     ArrayList<String> trackList;
+    ArrayList<String> albumList;
     ArrayList<String> artistName;
+    ArrayList<String> artistNameAlbum;
+    ArrayList<String> playListName;
     ArrayList<String> thumbnailUrl;
+    ArrayList<String> albumThumbnailUrl;
     ArrayList<String> artistThumbnailUrl;
     ArrayList<String> songId;
+    ArrayList<String> albumId;
+    ArrayList<Song> albumArrayList;
     ListAdapter listAdapter;
+    ListAdapterAlbum listAdapter2;
     ArrayList<Song> songArrayList;
     Handler mainHandler = new Handler();
     ProgressDialog progressDialog;
@@ -85,13 +105,19 @@ public class FetchDataTest extends AppCompatActivity {
 
     private void initializeDataList() {
         listView = findViewById(R.id.dataList);
+        albumListView = findViewById(R.id.dataListAlbum);
         trackList = new ArrayList<String>();
+        albumList = new ArrayList<String>();
         artistName = new ArrayList<String>();
+        artistNameAlbum = new ArrayList<String>();
         thumbnailUrl = new ArrayList<String>();
         artistThumbnailUrl = new ArrayList<String>();
+        albumThumbnailUrl = new ArrayList<String>();
+        playListName = new ArrayList<String>();
         songId = new ArrayList<String>();
+        albumId = new ArrayList<String>();
         songArrayList = new ArrayList<>();
-
+        albumArrayList = new ArrayList<>();
         db = FirebaseFirestore.getInstance();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user!=null)
@@ -117,7 +143,8 @@ public class FetchDataTest extends AppCompatActivity {
                 song.put("thumbnailUrl", thumbnailUrl.get(position));
                 song.put("title", trackList.get(position));
                 song.put("timestamp", new Timestamp(new Date()));
-                db.collection("users").document(userEmail).collection("stats").document("lastListened").collection("listenHistory").document(trackList.get(position)).set(song);
+                db.collection("users").document(userEmail).collection("stats").document("lastListened").collection("listenHistory").document(trackList.get(position)).set(song, SetOptions.merge());
+                db.collection("users").document(userEmail).collection("stats").document("lastListened").collection("listenHistory").document(trackList.get(position)).update("repeat", FieldValue.increment(1));
                 i.putExtra("listLength",trackList.size());
                 i.putExtra("songIdArray",songId);
                 i.putExtra("artistArray", artistName);
@@ -128,6 +155,102 @@ public class FetchDataTest extends AppCompatActivity {
                 MainActivity.releasePlayer();
             }
         });
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String songTitle=trackList.get(i);
+                String songArtist = artistName.get(i);
+                String songIdNum = songId.get(i);
+                String songThumbnail = thumbnailUrl.get(i);
+                showAlert(songTitle,songThumbnail,songIdNum,songArtist,userEmail);
+                return true;
+            }
+        });
+
+        listAdapter2 = new ListAdapterAlbum(this,albumArrayList);
+        albumListView.setAdapter(listAdapter2);
+        albumListView.setClickable(false);
+    }
+
+    AlertDialog myDialog;
+    AlertDialog createDialog;
+    ArrayList<String> playlistsDialog;
+    CharSequence[] playlistDialogFinal = {};
+
+    private void showAlert(String songTitle, String songThumbnail, String songIdNum, String songArtist, String userEmail) {
+        playlistsDialog = new ArrayList<>();
+        playlistDialogFinal = playlistsDialog.toArray(new CharSequence[playlistsDialog.size()]);
+        AlertDialog.Builder myBuilder = new AlertDialog.Builder(this);
+        playlistsDialog.add("+ Create A Playlist");
+        db.collection("users").document(userEmail).collection("playlists")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                playlistsDialog.add(document.getId());
+                            }
+                            playlistDialogFinal = playlistsDialog.toArray(new CharSequence[playlistsDialog.size()]);
+                            myBuilder.setTitle("Add to playlist").setItems(playlistDialogFinal, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    if(i==0){
+                                        AlertDialog.Builder createBuilder = new AlertDialog.Builder(FetchDataTest.this);
+                                        LayoutInflater inflater = FetchDataTest.this.getLayoutInflater();
+                                        createBuilder.setView(inflater.inflate(R.layout.create_playlist,null)).setPositiveButton("Create and add", new DialogInterface.OnClickListener() {
+
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                Dialog dlg = (Dialog) createDialog;
+                                                EditText etPlaylistTile= (EditText) dlg.findViewById(R.id.playlistName);
+
+                                                String titlePlaylist = etPlaylistTile.getText().toString();
+                                                if(TextUtils.isEmpty(titlePlaylist)){
+                                                    etPlaylistTile.setError("Title cannot be empty");
+                                                    etPlaylistTile.requestFocus();
+                                                }
+                                                else {
+                                                    Map<String, Object> song = new HashMap<>();
+                                                    song.put("artist", songArtist);
+                                                    song.put("title", songTitle);
+                                                    song.put("songId", songIdNum);
+                                                    song.put("thumbnailUrl", songThumbnail);
+                                                    song.put("timestamp", new Timestamp(new Date()));
+                                                    Map<String, Object> initializer = new HashMap<>();
+                                                    initializer.put("init","init");
+                                                    db.collection("users").document(userEmail).collection("playlists").document(titlePlaylist).set(initializer);
+                                                    db.collection("users").document(userEmail).collection("playlists").document(titlePlaylist).collection("songs").document(songTitle).set(song);
+                                                    Toast.makeText(FetchDataTest.this, "Added to playlist", Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
+                                        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                createDialog.hide();
+                                            }
+                                        });
+                                        createDialog = createBuilder.create();
+                                        createDialog.show();
+                                    }
+                                    else {
+                                        Map<String, Object> song = new HashMap<>();
+                                        song.put("artist", songArtist);
+                                        song.put("title", songTitle);
+                                        song.put("songId", songIdNum);
+                                        song.put("thumbnailUrl", songThumbnail);
+                                        song.put("timestamp", new Timestamp(new Date()));
+                                        db.collection("users").document(userEmail).collection("playlists").document(playlistDialogFinal[i].toString()).collection("songs").document(songTitle).set(song);
+                                        Toast.makeText(FetchDataTest.this, "Added to playlist", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+                            myDialog=myBuilder.create();
+                            myDialog.show();
+                        } else {
+                            Log.w("ERROR", "Error getting documents.", task.getException());
+                        }}
+                });
     }
 
     class fetchData extends  Thread {
@@ -411,12 +534,19 @@ public class FetchDataTest extends AppCompatActivity {
                     desc = jsonObject.getString("description");
                     JSONObject dataLong = jsonObject.getJSONObject("songs");
                     JSONArray data = dataLong.getJSONArray("results");
+                    JSONObject albumDataDirty = jsonObject.getJSONObject("albums");
+                    JSONArray albumData = albumDataDirty.getJSONArray("results");
+
 
                     trackList.clear();
                     songId.clear();
                     artistName.clear();
                     thumbnailUrl.clear();
                     artistThumbnailUrl.clear();
+                    albumList.clear();
+                    albumId.clear();
+                    artistNameAlbum.clear();
+                    albumThumbnailUrl.clear();
 
                     for (int i =0; i< data.length(); i++){
 
@@ -435,10 +565,34 @@ public class FetchDataTest extends AppCompatActivity {
                         artistThumbnailUrl.add(thumbnail);
                         thumbnailUrl.add(songThumbnailFinal);
 
+
                         for (int l = 0; l < 1; l++) {
                             Song song = new Song(trackName, name, id, "Greece", songThumbnailFinal);
                             songArrayList.add(song);
                             artistThumbnailUrl.add(thumbnail);
+                        }
+                    }
+                    for (int i =0; i< albumData.length(); i++){
+
+                        JSONObject dataFinalAlbum = albumData.getJSONObject(i);
+                        JSONObject albumNameDirty = dataFinalAlbum.getJSONObject("title");
+                        String albumName = albumNameDirty.getString("text");
+                        String idAlbum = dataFinalAlbum.getString("url");
+                        String  albumAuthor = dataFinalAlbum.getString("author");
+                        JSONArray albumThumb = dataFinalAlbum.getJSONArray("thumbnail");
+                        JSONObject albumThumbnail = albumThumb.getJSONObject(0);
+                        String albThumbnailUrl = albumThumbnail.getString("url");
+                        String albumThumbnailFinal = UrlClean.url(albThumbnailUrl);
+                        albumList.add(albumName);
+                        albumId.add(idAlbum);
+                        artistNameAlbum.add(albumAuthor);
+                        albumThumbnailUrl.add(albumThumbnailFinal);
+
+                        //
+
+                        for (int l = 0; l < 1; l++) {
+                            Song album = new Song(albumName, albumAuthor, idAlbum, "Greece",albumThumbnailFinal);
+                            albumArrayList.add(album);
                         }
                     }
                     Handler uiHandler = new Handler(Looper.getMainLooper());
@@ -468,6 +622,7 @@ public class FetchDataTest extends AppCompatActivity {
                     if (progressDialog.isShowing())
                         progressDialog.dismiss();
                     listAdapter.notifyDataSetChanged();
+                    listAdapter2.notifyDataSetChanged();
                 }
             });
 

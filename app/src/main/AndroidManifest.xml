@@ -90,6 +90,16 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".ui.login.FirebasePlaylistActivity"
+            android:exported="true"
+            android:label="ProjectLogin">
+            <intent-filter>
+                <action android:name="android.intent.action.FirebasePlaylistActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".ui.login.SearchResultsActivity"
             android:exported="true"
             android:label="ProjectLogin">
@@ -109,10 +119,26 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.login.LibraryActivity"
+            android:exported="true"
+            android:label="ProjectLogin">
+            <intent-filter>
+                <action android:name="android.intent.action.LibraryActivity" />
 
-        <meta-data
-            android:name="com.google.android.actions"
-            android:resource="@xml/video_overlay_motionscene"/>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.login.GenreActivity"
+            android:exported="true"
+            android:label="ProjectLogin">
+            <intent-filter>
+                <action android:name="android.intent.action.GenreActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
 
     </application>
 

@@ -4,8 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:fillViewport="true"
+    android:id="@+id/viewGroup2">
 <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/viewGroup"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="#121212"
@@ -18,7 +20,7 @@
         app:layout_constraintBottom_toTopOf="@id/PlaylistTitle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintWidth_percent=".5"
-        android:src="@drawable/topsongs"
+        android:src="@drawable/missingbackground"
         android:id="@+id/Image"
         />
 
@@ -28,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:textColor="@color/white"
-        android:text="Top 100 Songs"
+        android:text=""
         android:textSize="30dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -36,46 +38,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/Image" />
 
-    <TextView
-        android:id="@+id/TextViewTopSongs"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:textColor="@color/white"
-        android:text="100 Songs - Duration 6 hours and 32 Minutes"
-        android:textSize="17dp"
-        android:paddingTop="15dp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintWidth_percent=".5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/PlaylistTitle" />
-
     <ListView
         android:id="@+id/dataList"
         android:layout_width="match_parent"
-        app:layout_constraintTop_toBottomOf="@+id/TextViewTopSongs"
+        app:layout_constraintTop_toBottomOf="@+id/PlaylistTitle"
         app:layout_constraintBottom_toTopOf="@+id/nav_bot"
         tools:listitem="@layout/list_adapter_song"
-        android:layout_height="395dp"/>
+        android:layout_height="412dp"/>
 
     <RelativeLayout
-        android:id="@+id/rl_footer"
+        android:id="@+id/bottomMenu"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        app:layout_constraintBottom_toBottomOf="parent"
         tools:ignore="MissingConstraints">
         <include layout="@layout/layout_bottom_navigation_view" />
     </RelativeLayout>
-
-    <com.example.projectlogin.SongOverlay
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

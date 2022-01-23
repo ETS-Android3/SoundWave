@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,7 +14,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -32,17 +30,15 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.squareup.picasso.Picasso;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -59,26 +55,28 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-public class PlaylistActivity extends AppCompatActivity {
+public class FirebasePlaylistActivity extends AppCompatActivity {
 
-    Button button;
     ListView listView;
     ActivityMainBinding binding;
     ArrayList<String> trackList;
     ArrayList<String> artistName;
     ArrayList<String> playListName;
     ArrayList<String> thumbnailUrl;
-    ArrayList<String> artistThumbnailUrl;
     ArrayList<String> songId;
     ListAdapter listAdapter;
     ArrayList<Song> songArrayList;
     Handler mainHandler = new Handler();
+    CollectionReference collectionReference;
     ProgressDialog progressDialog;
     ImageView imageView;
+    TextView playlistTitle;
     FirebaseFirestore db;
+    String typeOfPlaylist;
     String userEmail;
     String urlFinal;
-
+    FirebaseUser user;
+    String playlistName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,17 +85,43 @@ public class PlaylistActivity extends AppCompatActivity {
         Intent intent = this.getIntent();
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         imageView = findViewById(R.id.Image);
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        playlistTitle = findViewById(R.id.PlaylistTitle);
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        urlFinal = ("https://yma-server.herokuapp.com/playlist/RDTMAK5uy_lr0LWzGrq6FU9GIxWvFHTRPQD2LHMqlFA");
         if (user!=null)
         {
             userEmail= user.getEmail();
         }
         initializeDataList();
-        new fetchData().start();
+        new FirebasePlaylistActivity.fetchData().start();
 
         if (intent != null){
-            String playlistId = intent.getStringExtra("playlistUrl");
-            urlFinal = ("https://yma-server.herokuapp.com/playlist/"+playlistId);
+            typeOfPlaylist = intent.getStringExtra("type");
+            switch (typeOfPlaylist){
+                case "onRepeat":
+                    Picasso.get().load(R.drawable.repeat).placeholder(R.drawable.missingbackground)
+                            .error(R.drawable.missingbackground).fit().centerCrop().into(imageView);
+                    playlistTitle.setText("On Repeat");
+                    collectionReference = db.collection("users").document(userEmail).collection("stats").document("lastListened").collection("listenHistory");
+                    break;
+                case "history":
+                    Picasso.get().load("https://cdn3.iconfinder.com/data/icons/google-material-design-icons/48/ic_history_48px-512.png").placeholder(R.drawable.missingbackground)
+                            .error(R.drawable.missingbackground).fit().centerCrop().into(imageView);
+                    playlistTitle.setText("History");
+                    break;
+                case "likedSongs":
+                    Picasso.get().load(R.drawable.likedsongs).placeholder(R.drawable.missingbackground)
+                            .error(R.drawable.missingbackground).fit().centerCrop().into(imageView);
+                    playlistTitle.setText("Liked Songs");
+                    collectionReference = db.collection("users").document(userEmail).collection("playlists").document("likedSongs").collection("songs");
+                    break;
+                case "userCreatedPlaylist":
+                    Picasso.get().load("https://lh3.googleusercontent.com/wr28amLh-pMk4vmrYv_Orhly8DTtdvZJFuLwmXG5RNvZJjGlFe_WMnKp4pWlZI1gL7ihQn-xZuzZ0A6VZZbv2Z-iTEH3dpjn").placeholder(R.drawable.missingbackground)
+                            .error(R.drawable.missingbackground).fit().centerCrop().into(imageView);
+                    playlistName = intent.getStringExtra("name");
+                    collectionReference = db.collection("users").document(userEmail).collection("playlists").document(playlistName).collection("songs");
+                    break;
+            }
         }
         setupBottomNavigation();
     }
@@ -107,7 +131,6 @@ public class PlaylistActivity extends AppCompatActivity {
         trackList = new ArrayList<String>();
         artistName = new ArrayList<String>();
         thumbnailUrl = new ArrayList<String>();
-        artistThumbnailUrl = new ArrayList<String>();
         playListName = new ArrayList<String>();
         songId = new ArrayList<String>();
         songArrayList = new ArrayList<>();
@@ -119,8 +142,8 @@ public class PlaylistActivity extends AppCompatActivity {
         listView.setClickable(true);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
-            public void onItemClick(AdapterView<?> parent,View view, int position, long id){
-                Intent i = new Intent(PlaylistActivity.this, MainActivity.class);
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+                Intent i = new Intent(FirebasePlaylistActivity.this, MainActivity.class);
                 i.putExtra("track", trackList.get(position));
                 i.putExtra("artist", artistName.get(position));
                 i.putExtra("thumbnail", thumbnailUrl.get(position));
@@ -156,14 +179,6 @@ public class PlaylistActivity extends AppCompatActivity {
         });
     }
 
-//    private void replaceVideoFragment() {
-//        getSupportFragmentManager().beginTransaction()
-//                .replace(R.id.fragmentContainer,
-//                        PlayerFragment.Companion
-//                                .newInstance("https://lh3.googleusercontent.com/wr28amLh-pMk4vmrYv_Orhly8DTtdvZJFuLwmXG5RNvZJjGlFe_WMnKp4pWlZI1gL7ihQn-xZuzZ0A6VZZbv2Z-iTEH3dpjn"))
-//                .commit();
-//    }
-
     AlertDialog myDialog;
     AlertDialog createDialog;
     ArrayList<String> playlistsDialog;
@@ -189,8 +204,8 @@ public class PlaylistActivity extends AppCompatActivity {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     if(i==0){
-                                        AlertDialog.Builder createBuilder = new AlertDialog.Builder(PlaylistActivity.this);
-                                        LayoutInflater inflater = PlaylistActivity.this.getLayoutInflater();
+                                        AlertDialog.Builder createBuilder = new AlertDialog.Builder(FirebasePlaylistActivity.this);
+                                        LayoutInflater inflater = FirebasePlaylistActivity.this.getLayoutInflater();
                                         createBuilder.setView(inflater.inflate(R.layout.create_playlist,null)).setPositiveButton("Create and add", new DialogInterface.OnClickListener() {
 
                                             @Override
@@ -214,7 +229,7 @@ public class PlaylistActivity extends AppCompatActivity {
                                                     initializer.put("init","init");
                                                     db.collection("users").document(userEmail).collection("playlists").document(titlePlaylist).set(initializer);
                                                     db.collection("users").document(userEmail).collection("playlists").document(titlePlaylist).collection("songs").document(songTitle).set(song);
-                                                    Toast.makeText(PlaylistActivity.this, "Added to playlist", Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(FirebasePlaylistActivity.this, "Added to playlist", Toast.LENGTH_SHORT).show();
                                                 }
                                             }
                                         }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -234,7 +249,7 @@ public class PlaylistActivity extends AppCompatActivity {
                                         song.put("thumbnailUrl", songThumbnail);
                                         song.put("timestamp", new Timestamp(new Date()));
                                         db.collection("users").document(userEmail).collection("playlists").document(playlistDialogFinal[i].toString()).collection("songs").document(songTitle).set(song);
-                                        Toast.makeText(PlaylistActivity.this, "Added to playlist", Toast.LENGTH_SHORT).show();                                    }
+                                        Toast.makeText(FirebasePlaylistActivity.this, "Added to playlist", Toast.LENGTH_SHORT).show();                                    }
                                 }
                             });
                             myDialog=myBuilder.create();
@@ -246,8 +261,6 @@ public class PlaylistActivity extends AppCompatActivity {
     }
 
     class fetchData extends  Thread {
-
-        String data = "";
 
         @Override
         public void run() {
@@ -503,7 +516,7 @@ public class PlaylistActivity extends AppCompatActivity {
                             "Feeding unicorns...");
                     Random rand = new Random();
                     String randomElement = list.get(rand.nextInt(list.size()));
-                    progressDialog = new ProgressDialog(PlaylistActivity.this);
+                    progressDialog = new ProgressDialog(FirebasePlaylistActivity.this);
                     progressDialog.setMessage(randomElement);
                     progressDialog.setCancelable(false);
                     progressDialog.show();
@@ -511,78 +524,130 @@ public class PlaylistActivity extends AppCompatActivity {
             });
 
             try {
+                if(typeOfPlaylist.equals("onRepeat")){
+                    collectionReference.orderBy("repeat", Query.Direction.DESCENDING).get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    if(typeOfPlaylist.equals("userCreatedPlaylist")){
+                                        playlistTitle.setText(playlistName);
+                                    }
+                                    trackList.clear();
+                                    songId.clear();
+                                    artistName.clear();
+                                    thumbnailUrl.clear();
+                                    playListName.clear();
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        String trackName = (String) document.get("title");
+                                        String id = (String) document.get("songId");
+                                        String name = (String) document.get("artist");
+                                        String songThumbnailFinal = (String) document.get("thumbnailUrl");
+
+                                        trackList.add(trackName);
+                                        songId.add(id);
+                                        artistName.add(name);
+                                        thumbnailUrl.add(songThumbnailFinal);
+                                        playListName.add("On Repeat");
+
+                                        for (int l = 0; l < 1; l++) {
+                                            Song song = new Song(trackName, name, id, "Greece", songThumbnailFinal);
+                                            songArrayList.add(song);
+                                        }
+
+                                    }
+                                } else {
+                                    Log.d("FIREBASERESPONSE", "Error getting documents: ", task.getException());
+                                }
+                            }
+                        });
+                }
+                else if (typeOfPlaylist.equals("history")){
+                    db.collection("users").document(userEmail).collection("stats").document("lastListened").collection("listenHistory").orderBy("timestamp", Query.Direction.DESCENDING).limit(50).get()
+                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        if (typeOfPlaylist.equals("userCreatedPlaylist")) {
+                                            playlistTitle.setText(playlistName);
+                                        }
+                                        trackList.clear();
+                                        songId.clear();
+                                        artistName.clear();
+                                        thumbnailUrl.clear();
+                                        playListName.clear();
+                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                            String trackName = (String) document.get("title");
+                                            String id = (String) document.get("songId");
+                                            String name = (String) document.get("artist");
+                                            String songThumbnailFinal = (String) document.get("thumbnailUrl");
+
+                                            trackList.add(trackName);
+                                            songId.add(id);
+                                            artistName.add(name);
+                                            thumbnailUrl.add(songThumbnailFinal);
+                                            playListName.add("On Repeat");
+
+                                            for (int l = 0; l < 1; l++) {
+                                                Song song = new Song(trackName, name, id, "Greece", songThumbnailFinal);
+                                                songArrayList.add(song);
+                                                Log.d("FIREBASERESPONSE", song.name);
+                                            }
+
+                                        }
+                                    } else {
+                                        Log.d("FIREBASERESPONSE", "Error getting documents: ", task.getException());
+                                    }
+                                }
+                            });
+                } else {
+                    collectionReference.get()
+                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        if (typeOfPlaylist.equals("userCreatedPlaylist")) {
+                                            playlistTitle.setText(playlistName);
+                                        }
+                                        trackList.clear();
+                                        songId.clear();
+                                        artistName.clear();
+                                        thumbnailUrl.clear();
+                                        playListName.clear();
+                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                            String trackName = (String) document.get("title");
+                                            String id = (String) document.get("songId");
+                                            String name = (String) document.get("artist");
+                                            String songThumbnailFinal = (String) document.get("thumbnailUrl");
+
+                                            trackList.add(trackName);
+                                            songId.add(id);
+                                            artistName.add(name);
+                                            thumbnailUrl.add(songThumbnailFinal);
+                                            playListName.add("On Repeat");
+
+                                            for (int l = 0; l < 1; l++) {
+                                                Song song = new Song(trackName, name, id, "Greece", songThumbnailFinal);
+                                                songArrayList.add(song);
+                                                Log.d("FIREBASERESPONSE", song.name);
+                                            }
+
+                                        }
+                                    } else {
+                                        Log.d("FIREBASERESPONSE", "Error getting documents: ", task.getException());
+                                    }
+                                }
+                            });
+                }
+
+                // JUNK CODE TO GET TO LOAD BECAUSE TOO MUCH WORK TO BUILD NEW ACTIVITY FROM SCRATCH
                 URL url = new URL(urlFinal);
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                 InputStream inputStream = httpURLConnection.getInputStream();
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-                String line;
-
-                while ((line = bufferedReader.readLine()) != null) {
-                    data = data + line;
-                }
-
-                if (!data.isEmpty()) {
-                    JSONObject jsonObject = new JSONObject(data);
-                    //String desc = jsonObject.getString("description");
-                    JSONObject playListTitleLong = jsonObject.getJSONObject("title");
-                    //JSONObject dataLong = jsonObject.getJSONObject("content");
-                    JSONArray data = jsonObject.getJSONArray("content");
-
-                    trackList.clear();
-                    songId.clear();
-                    artistName.clear();
-                    thumbnailUrl.clear();
-                    artistThumbnailUrl.clear();
-                    playListName.clear();
-
-                    for (int i =0; i< data.length(); i++){
-
-                        JSONObject dataFinal = data.getJSONObject(i);
-                        JSONObject tracks = dataFinal.getJSONObject("title");
-                        String trackName = tracks.getString("text");
-                        String id = dataFinal.getString("id");
-                        JSONArray author = dataFinal.getJSONArray("author");
-                        JSONObject authorObject = author.getJSONObject(0);
-                        String name = authorObject.getString("text");
-                        String playListTitle = playListTitleLong.getString("text");
-                        JSONArray thumbnailArray = jsonObject.getJSONArray("thumbnail");
-                        JSONObject thumbnailObject = thumbnailArray.getJSONObject(0);
-                        String thumbnail = thumbnailObject.getString("url");
-                        String thumbnailFinal = UrlClean.url(thumbnail);
-                        JSONArray songThumb = dataFinal.getJSONArray("thumbnail");
-                        JSONObject songThumbnail = songThumb.getJSONObject(0);
-                        String songThumbnailUrl = songThumbnail.getString("url");
-                        String songThumbnailFinal = UrlClean.url(songThumbnailUrl);
-                        trackList.add(trackName);
-                        songId.add(id);
-                        artistName.add(name);
-                        artistThumbnailUrl.add(thumbnailFinal);
-                        thumbnailUrl.add(songThumbnailFinal);
-                        playListName.add(playListTitle);
-
-                        for (int l = 0; l < 1; l++) {
-                            Song song = new Song(trackName, name, id, "Greece", songThumbnailFinal);
-                            songArrayList.add(song);
-                            artistThumbnailUrl.add(thumbnailFinal);
-                        }
-                    }
-                    Handler uiHandler = new Handler(Looper.getMainLooper());
-                    uiHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            Picasso.get().load(artistThumbnailUrl.get(0)).placeholder(R.drawable.missingbackground).error(R.drawable.missingbackground).fit().centerCrop().into(imageView);
-
-                            TextView artist = findViewById(R.id.PlaylistTitle);
-                            artist.setText(playListName.get(0));
-                        }
-                    });
-                }
-
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             } catch (IOException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
                 e.printStackTrace();
             }
 
@@ -601,7 +666,7 @@ public class PlaylistActivity extends AppCompatActivity {
     private void setupBottomNavigation(){
         BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottomNavViewBar);
         BottomNavigationHelper.setupBottomNavigationView(bottomNavigationViewEx);
-        BottomNavigationHelper.enableNavigation(PlaylistActivity.this,bottomNavigationViewEx);
+        BottomNavigationHelper.enableNavigation(FirebasePlaylistActivity.this,bottomNavigationViewEx);
 
         Menu menu = bottomNavigationViewEx.getMenu();
         MenuItem menuItem = menu.getItem(0);

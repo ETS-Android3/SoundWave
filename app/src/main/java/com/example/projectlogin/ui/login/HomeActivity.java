@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -29,7 +30,8 @@ public class HomeActivity extends AppCompatActivity {
 
     ImageView recommended1image;
     ImageView recommended4image;
-
+    ImageView recommended2image;
+    ImageView recommended3image;
     ImageView lastListened1;
     ImageView lastListened2;
     ImageView lastListened3;
@@ -46,6 +48,7 @@ public class HomeActivity extends AppCompatActivity {
     ArrayList<String> songId;
     ArrayList<String> songTitle;
     ArrayList<String> songArtist;
+    ImageButton history;
     FirebaseFirestore db;
     String userEmail;
     int count;
@@ -546,6 +549,9 @@ public class HomeActivity extends AppCompatActivity {
 
         recommended1image = findViewById(R.id.Recommended1image);
         recommended4image = findViewById(R.id.Recommended4image);
+        recommended2image = findViewById(R.id.Recommended2image);
+        recommended3image = findViewById(R.id.Recommended3image);
+        history = findViewById(R.id.btn_history);
         recommended1image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -559,6 +565,31 @@ public class HomeActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent i = new Intent(HomeActivity.this,PlaylistActivity.class);
                 i.putExtra("playlistUrl","RDTMAK5uy_lr0LWzGrq6FU9GIxWvFHTRPQD2LHMqlFA");
+                startActivity(i);
+            }
+        });
+        recommended2image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(HomeActivity.this,FirebasePlaylistActivity.class);
+                i.putExtra("type","onRepeat");
+                startActivity(i);
+            }
+        });
+        recommended3image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(HomeActivity.this,FirebasePlaylistActivity.class);
+                i.putExtra("type","likedSongs");
+                startActivity(i);
+            }
+        });
+
+        history.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(HomeActivity.this,FirebasePlaylistActivity.class);
+                i.putExtra("type","history");
                 startActivity(i);
             }
         });

@@ -15,7 +15,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -32,9 +31,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.squareup.picasso.Picasso;
 
@@ -59,7 +60,6 @@ import java.util.Random;
 
 public class SearchResultsActivity extends AppCompatActivity {
 
-        Button button;
         ListView listView;
         ListView albumListView;
         ActivityMainBinding binding;
@@ -74,7 +74,7 @@ public class SearchResultsActivity extends AppCompatActivity {
         ArrayList<String> songId;
         ArrayList<String> albumId;
         ListAdapter listAdapter;
-        ListAdapter listAdapter2;
+        ListAdapterAlbum listAdapter2;
         ArrayList<Song> songArrayList;
         ArrayList<Song> albumArrayList;
         Handler mainHandler = new Handler();
@@ -142,7 +142,8 @@ protected void onCreate(Bundle savedInstanceState) {
                             song.put("thumbnailUrl", thumbnailUrl.get(position));
                             song.put("title", trackList.get(position));
                             song.put("timestamp", new Timestamp(new Date()));
-                            db.collection("users").document(userEmail).collection("stats").document("lastListened").collection("listenHistory").document(trackList.get(position)).set(song);
+                            db.collection("users").document(userEmail).collection("stats").document("lastListened").collection("listenHistory").document(trackList.get(position)).set(song, SetOptions.merge());
+                            db.collection("users").document(userEmail).collection("stats").document("lastListened").collection("listenHistory").document(trackList.get(position)).update("repeat", FieldValue.increment(1));
                             i.putExtra("listLength",trackList.size());
                             i.putExtra("songIdArray",songId);
                             i.putExtra("artistArray", artistName);
@@ -165,7 +166,7 @@ protected void onCreate(Bundle savedInstanceState) {
                                         }
                                         });
 
-                listAdapter2 = new ListAdapter(this,albumArrayList);
+                listAdapter2 = new ListAdapterAlbum(this,albumArrayList);
                 albumListView.setAdapter(listAdapter2);
                 albumListView.setClickable(false);
         }

@@ -6,12 +6,13 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.projectlogin.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
-public class BottomNavigationHelper {
+public class BottomNavigationHelper extends AppCompatActivity {
     private static final String TAG = "BottomNavigationViewHel";
 
     public static void setupBottomNavigationView(BottomNavigationViewEx bottomNavigationViewEx){
@@ -37,20 +38,15 @@ public class BottomNavigationHelper {
                         Intent intent2  = new Intent(context, SearchActivity.class);//ACTIVITY_NUM = 1
                         context.startActivity(intent2);
                         break;
-//
-//                    case R.id.ic_circle:
-//                       Intent intent3 = new Intent(context, ShareActivity.class);//ACTIVITY_NUM = 2
-//                       context.startActivity(intent3);
-//                       break;
-//
-//                    case R.id.ic_alert:
-//                        Intent intent4 = new Intent(context, LikesActivity.class);//ACTIVITY_NUM = 3
-//                        context.startActivity(intent4);
-//                       break;
+
+                    case R.id.libraryActivity:
+                       Intent intent3 = new Intent(context, LibraryActivity.class);//ACTIVITY_NUM = 2
+                       context.startActivity(intent3);
+                       break;
 
                     case R.id.profileActivity:
-                        Intent intent3 = new Intent(context, ProfileActivity.class);//ACTIVITY_NUM = 4
-                       context.startActivity(intent3);
+                        Intent intent4 = new Intent(context, ProfileActivity.class);//ACTIVITY_NUM = 3
+                       context.startActivity(intent4);
                        break;
                }
 
@@ -60,3 +56,4 @@ public class BottomNavigationHelper {
         });
     }
 }
+

@@ -9,36 +9,43 @@
     android:background="@drawable/login_register_background"
     tools:context="ui.login.RegisterActivity">
 
-
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center_horizontal"
+        android:baselineAligned="false"
+        android:layout_marginTop="25dp"
+        android:src="@drawable/soundwave_logo_transparent" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_gravity="center"
-        android:layout_marginTop="25dp">
+        android:layout_gravity="center">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Register"
-            android:textSize="30sp"
-            android:textStyle="bold"
-            android:textColor="@color/white"
+            android:layout_marginVertical="20dp"
             android:gravity="center_horizontal"
-            android:layout_marginTop="100dp"
-            android:layout_marginLeft="10dp" />
+            android:text="Register"
+            android:textColor="@color/white"
+            android:textSize="30sp"
+            android:textStyle="bold" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:boxBackgroundColor="#FFFFFF"
+            app:counterTextColor="@color/black"
             android:layout_height="wrap_content"
-            android:layout_marginTop="36dp">
+            android:layout_marginTop="15dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etRegName"
                 android:layout_width="match_parent"
+                android:textColor="@color/black"
                 android:layout_height="wrap_content"
                 android:hint="Username ( min 3 characters )"
                 android:inputType="textEmailAddress"/>
@@ -49,12 +56,14 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:boxBackgroundColor="#FFFFFF"
             android:layout_height="wrap_content"
+            app:counterTextColor="@color/black"
             android:layout_marginTop="24dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etRegEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/black"
                 android:hint="Email ( email@emailprovider.gr )"
                 android:inputType="textEmailAddress"/>
         </com.google.android.material.textfield.TextInputLayout>
@@ -64,12 +73,14 @@
             android:layout_width="match_parent"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:boxBackgroundColor="#FFFFFF"
+            app:counterTextColor="@color/black"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etRegPass"
                 android:layout_width="match_parent"
+                android:textColor="@color/black"
                 android:layout_height="wrap_content"
                 android:hint="Password ( at least 1 number required )"
                 android:inputType="textPassword"/>
@@ -79,12 +90,14 @@
             android:layout_width="match_parent"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:boxBackgroundColor="#FFFFFF"
+            app:counterTextColor="@color/black"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etRegPhone"
                 android:layout_width="match_parent"
+                android:textColor="@color/black"
                 android:layout_height="wrap_content"
                 android:hint="Phone Number ( +30 - 69xxxxxxxx )"
                 android:inputType="text"/>
@@ -95,6 +108,7 @@
             android:id="@+id/btnRegister"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/white"
             android:layout_marginTop="48dp"
             android:text="Register"/>
 
@@ -125,11 +139,5 @@
         </LinearLayout>
 
     </LinearLayout>
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginLeft="125dp"
-        android:layout_marginTop="-670dp"
-        android:src="@drawable/soundwave_logo_transparent" />
+
 </LinearLayout>

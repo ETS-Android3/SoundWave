@@ -2,14 +2,11 @@ package com.example.projectlogin.ui.login;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
@@ -28,10 +25,8 @@ import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 import java.util.ArrayList;
 
-public class SearchActivity extends AppCompatActivity {
+public class LibraryActivity extends AppCompatActivity {
 
-    EditText searchText;
-    Button searchButton;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     String userEmail;
     ArrayList<Song> playlistTitles = new ArrayList<>();
@@ -39,34 +34,10 @@ public class SearchActivity extends AppCompatActivity {
     ListAdapterAlbum listAdapter;
     ListView listView;
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.search_activity);
-
-        searchText = findViewById(R.id.SearchQuery);
-        searchButton = findViewById(R.id.SearchButton);
-
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                String searchQuery = searchText.getText().toString();
-
-                if (TextUtils.isEmpty(searchQuery)){
-                    searchText.setError("No empty queries allowed.");
-                    searchText.requestFocus();
-                }else{
-
-                    Intent i = new Intent(SearchActivity.this, SearchResultsActivity.class);
-                    i.putExtra("query",searchQuery);
-                    startActivity(i);
-
-                }
-            }
-        });
-
+        setContentView(R.layout.activity_library);
         listView = findViewById(R.id.dataList);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -76,7 +47,7 @@ public class SearchActivity extends AppCompatActivity {
             userEmail= user.getEmail();
         }
 
-        db.collection("genres")
+        db.collection("users").document(userEmail).collection("playlists")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -87,15 +58,15 @@ public class SearchActivity extends AppCompatActivity {
                                 playlistTitles.add(song);
                                 playlistTitlesActivity.add(document.getId());
                             }
-                            listAdapter = new ListAdapterAlbum(SearchActivity.this, playlistTitles);
+                            listAdapter = new ListAdapterAlbum(LibraryActivity.this, playlistTitles);
                             listView.setAdapter(listAdapter);
                             listView.setClickable(true);
                             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                 @Override
                                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                    Intent intent = new Intent(SearchActivity.this, GenreActivity.class);
+                                    Intent intent = new Intent(LibraryActivity.this, FirebasePlaylistActivity.class);
                                     intent.putExtra("type", "userCreatedPlaylist");
-                                    intent.putExtra("title", playlistTitlesActivity.get(i));
+                                    intent.putExtra("name", playlistTitlesActivity.get(i));
                                     startActivity(intent);
                                 }
                             });
@@ -105,7 +76,6 @@ public class SearchActivity extends AppCompatActivity {
                     }
                 });
 
-
         setupBottomNavigation();
 
     }
@@ -113,10 +83,10 @@ public class SearchActivity extends AppCompatActivity {
     private void setupBottomNavigation(){
         BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottomNavViewBar);
         BottomNavigationHelper.setupBottomNavigationView(bottomNavigationViewEx);
-        BottomNavigationHelper.enableNavigation(SearchActivity.this,bottomNavigationViewEx);
+        BottomNavigationHelper.enableNavigation(LibraryActivity.this,bottomNavigationViewEx);
 
         Menu menu = bottomNavigationViewEx.getMenu();
-        MenuItem menuItem = menu.getItem(1);
+        MenuItem menuItem = menu.getItem(2);
         menuItem.setChecked(true);
     }
 }
