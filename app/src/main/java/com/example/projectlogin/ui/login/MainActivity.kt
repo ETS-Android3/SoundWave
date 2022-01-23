@@ -16,15 +16,19 @@ import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.firebase.auth.FirebaseUser
 import com.example.projectlogin.ui.login.LoginActivity
 import android.app.Activity
+import android.graphics.PorterDuff
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
+import android.widget.Toast
 import com.example.projectlogin.ui.login.ProfileActivity
 import com.example.projectlogin.ui.login.HomeActivity
 import com.example.projectlogin.ui.login.PlaylistActivity
 import com.example.projectlogin.ui.login.SettingsActivity
 import com.google.android.exoplayer2.MediaItem
+import com.google.firebase.firestore.FirebaseFirestore
 import java.util.ArrayList
+import java.util.HashMap
 
 class MainActivity : AppCompatActivity() {
     var mAuth: FirebaseAuth? = null
@@ -41,6 +45,11 @@ class MainActivity : AppCompatActivity() {
     var positionPlaylist = 0
     var listLength = 0
     var lastWindowIndex = 0
+    var db: FirebaseFirestore? = null
+    var userEmail: String? = null
+    var artist: String? = null
+    var track: String? = null
+    var state : Boolean? = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,8 +70,8 @@ class MainActivity : AppCompatActivity() {
             startActivity(i)
         })
         if (intent != null) {
-            val track = intent.getStringExtra("track")
-            val artist = intent.getStringExtra("artist")
+            track = intent.getStringExtra("track")
+            artist = intent.getStringExtra("artist")
             thumbnail = intent.getStringExtra("thumbnail")
             val replacedThumbnail = thumbnail!!.replace("(=).*".toRegex(), " ")
             songTitle?.setText(track)
@@ -83,6 +92,8 @@ class MainActivity : AppCompatActivity() {
                 MediaItem.fromUri("https://stream-server-youtube.herokuapp.com/" + songIdArray!![i])
             )
         }
+
+
         simpleExoPlayer!!.seekTo(positionPlaylist, C.TIME_UNSET)
         simpleExoPlayer!!.addListener(object : Player.Listener {
             //@Override
@@ -100,6 +111,38 @@ class MainActivity : AppCompatActivity() {
             }
         })
         mAuth = FirebaseAuth.getInstance()
+
+        val btnAction: ImageView = findViewById<ImageView>(R.id.like)
+        val btnShuffle: ImageView = findViewById<ImageView>(R.id.exo_shuffles)
+        val user = FirebaseAuth.getInstance().currentUser
+        if (user != null) {
+            userEmail = user.email
+        }
+
+        btnAction.setOnClickListener {
+            db = FirebaseFirestore.getInstance()
+            val user: MutableMap<String, Any> = HashMap()
+            val latestWindowIndex = simpleExoPlayer!!.currentWindowIndex
+            user["artist"] = this.songArtistArray!![latestWindowIndex]
+            user["title"] = this.songTitleArray!![latestWindowIndex]
+            user["songId"] = this.songIdArray!![latestWindowIndex]
+            user["thumbnailUrl"] = this.thumbnailArray!![latestWindowIndex]
+            db!!.collection("users").document(userEmail!!).collection("playlists")
+                .document("likedSongs").collection("songs").document(this.songTitleArray!![latestWindowIndex]).set(user)
+            Toast.makeText(this@MainActivity, "Added to liked songs!", Toast.LENGTH_SHORT).show()
+        }
+
+        btnShuffle.setOnClickListener{
+
+            simpleExoPlayer!!.setShuffleModeEnabled(this.state!!)
+            if(state as Boolean){
+                btnShuffle.setColorFilter(R.color.white)
+            }
+            else {
+                btnShuffle.setColorFilter(R.color.colorPrimary)
+            }
+            state = !state!!
+        }
 
     }
 
