@@ -97,12 +97,13 @@ public class FirebasePlaylistActivity extends AppCompatActivity {
 
         if (intent != null){
             typeOfPlaylist = intent.getStringExtra("type");
+            playlistName = intent.getStringExtra("name");
             switch (typeOfPlaylist){
                 case "onRepeat":
                     Picasso.get().load(R.drawable.repeat).placeholder(R.drawable.missingbackground)
                             .error(R.drawable.missingbackground).fit().centerCrop().into(imageView);
                     playlistTitle.setText("On Repeat");
-                    collectionReference = db.collection("users").document(userEmail).collection("stats").document("lastListened").collection("listenHistory");
+                    //collectionReference = db.collection("users").document(userEmail).collection("stats").document("lastListened").collection("listenHistory");
                     break;
                 case "history":
                     Picasso.get().load("https://cdn3.iconfinder.com/data/icons/google-material-design-icons/48/ic_history_48px-512.png").placeholder(R.drawable.missingbackground)
@@ -113,13 +114,12 @@ public class FirebasePlaylistActivity extends AppCompatActivity {
                     Picasso.get().load(R.drawable.likedsongs).placeholder(R.drawable.missingbackground)
                             .error(R.drawable.missingbackground).fit().centerCrop().into(imageView);
                     playlistTitle.setText("Liked Songs");
-                    collectionReference = db.collection("users").document(userEmail).collection("playlists").document("likedSongs").collection("songs");
+                    //collectionReference = db.collection("users").document(userEmail).collection("playlists").document("likedSongs").collection("songs");
                     break;
                 case "userCreatedPlaylist":
                     Picasso.get().load("https://lh3.googleusercontent.com/wr28amLh-pMk4vmrYv_Orhly8DTtdvZJFuLwmXG5RNvZJjGlFe_WMnKp4pWlZI1gL7ihQn-xZuzZ0A6VZZbv2Z-iTEH3dpjn").placeholder(R.drawable.missingbackground)
                             .error(R.drawable.missingbackground).fit().centerCrop().into(imageView);
-                    playlistName = intent.getStringExtra("name");
-                    collectionReference = db.collection("users").document(userEmail).collection("playlists").document(playlistName).collection("songs");
+                    //collectionReference = db.collection("users").document(userEmail).collection("playlists").document(playlistName).collection("songs");
                     break;
             }
         }
@@ -525,7 +525,7 @@ public class FirebasePlaylistActivity extends AppCompatActivity {
 
             try {
                 if(typeOfPlaylist.equals("onRepeat")){
-                    collectionReference.orderBy("repeat", Query.Direction.DESCENDING).get()
+                    db.collection("users").document(userEmail).collection("stats").document("lastListened").collection("listenHistory").orderBy("repeat", Query.Direction.DESCENDING).get()
                         .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -600,8 +600,8 @@ public class FirebasePlaylistActivity extends AppCompatActivity {
                                     }
                                 }
                             });
-                } else {
-                    collectionReference.get()
+                } else if (typeOfPlaylist.equals("userCreatedPlaylist")){
+                    db.collection("users").document(userEmail).collection("playlists").document(playlistName).collection("songs").get()
                             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -638,6 +638,44 @@ public class FirebasePlaylistActivity extends AppCompatActivity {
                                     }
                                 }
                             });
+                } else if (typeOfPlaylist.equals("likedSongs")){
+                    db.collection("users").document(userEmail).collection("playlists").document("likedSongs").collection("songs").get()
+                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                if (typeOfPlaylist.equals("userCreatedPlaylist")) {
+                                    playlistTitle.setText(playlistName);
+                                }
+                                trackList.clear();
+                                songId.clear();
+                                artistName.clear();
+                                thumbnailUrl.clear();
+                                playListName.clear();
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    String trackName = (String) document.get("title");
+                                    String id = (String) document.get("songId");
+                                    String name = (String) document.get("artist");
+                                    String songThumbnailFinal = (String) document.get("thumbnailUrl");
+
+                                    trackList.add(trackName);
+                                    songId.add(id);
+                                    artistName.add(name);
+                                    thumbnailUrl.add(songThumbnailFinal);
+                                    playListName.add("On Repeat");
+
+                                    for (int l = 0; l < 1; l++) {
+                                        Song song = new Song(trackName, name, id, "Greece", songThumbnailFinal);
+                                        songArrayList.add(song);
+                                        Log.d("FIREBASERESPONSE", song.name);
+                                    }
+
+                                }
+                            } else {
+                                Log.d("FIREBASERESPONSE", "Error getting documents: ", task.getException());
+                            }
+                        }
+                    });
                 }
 
                 // JUNK CODE TO GET TO LOAD BECAUSE TOO MUCH WORK TO BUILD NEW ACTIVITY FROM SCRATCH
@@ -661,6 +699,17 @@ public class FirebasePlaylistActivity extends AppCompatActivity {
             });
 
         }
+    }
+
+    public void onBackPressed() {
+        mainHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                if (progressDialog.isShowing())
+                    progressDialog.dismiss();
+            }
+        });
+        super.onBackPressed();
     }
 
     private void setupBottomNavigation(){
