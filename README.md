@@ -33,6 +33,16 @@ It has been made from a collective of students from International Hellenic Unive
 | :-------- | :------- | :------------------------- |
 | `ArtistName` | `string` | **Required**. Retrieves artist data from Youtube Music |
 
+#### Get Album
+
+```http
+  GET /artist/${browseId}
+```
+
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `browseId` | `string` | **Required**. Retrieves album data from Youtube Music using browseId retrieved from previous query |
+
 #### Get Playlist
 
 ```http
