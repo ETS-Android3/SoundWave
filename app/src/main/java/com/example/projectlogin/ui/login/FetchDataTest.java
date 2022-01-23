@@ -169,7 +169,16 @@ public class FetchDataTest extends AppCompatActivity {
 
         listAdapter2 = new ListAdapterAlbum(this,albumArrayList);
         albumListView.setAdapter(listAdapter2);
-        albumListView.setClickable(false);
+        albumListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String albumUrl = PlaylistUrlClean.url(albumId.get(i));
+                Log.d("URLPLAYLIST", albumUrl);
+                Intent intent = new Intent(FetchDataTest.this,AlbumActivity.class);
+                intent.putExtra("playlistUrl",albumUrl);
+                startActivity(intent);
+            }
+        });
     }
 
     AlertDialog myDialog;
@@ -577,7 +586,7 @@ public class FetchDataTest extends AppCompatActivity {
                         JSONObject dataFinalAlbum = albumData.getJSONObject(i);
                         JSONObject albumNameDirty = dataFinalAlbum.getJSONObject("title");
                         String albumName = albumNameDirty.getString("text");
-                        String idAlbum = dataFinalAlbum.getString("url");
+                        String idAlbum = dataFinalAlbum.getString("browseId");
                         String  albumAuthor = dataFinalAlbum.getString("author");
                         JSONArray albumThumb = dataFinalAlbum.getJSONArray("thumbnail");
                         JSONObject albumThumbnail = albumThumb.getJSONObject(0);

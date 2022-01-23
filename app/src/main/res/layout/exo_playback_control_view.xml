@@ -32,24 +32,7 @@
         style="@style/ExoMediaButton.Next"
         />
 
-    <ImageView
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_gravity="center"
-        android:layout_marginLeft="170dp"
-        app:tint="@color/likeButtonColor"
-        android:src="@drawable/ic_baseline_thumb_up_24"
-        android:id="@+id/like"
-        />
 
-    <ImageView
-        android:id="@+id/exo_shuffles"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_gravity="center"
-        android:layout_marginRight="170dp"
-        app:tint="@color/white"
-        android:src="@drawable/ic_baseline_shuffle_24"/>
 
     <LinearLayout
         android:layout_width="match_parent"

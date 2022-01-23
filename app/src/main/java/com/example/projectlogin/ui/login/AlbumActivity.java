@@ -15,7 +15,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -59,9 +58,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-public class PlaylistActivity extends AppCompatActivity {
+public class AlbumActivity extends AppCompatActivity {
 
-    Button button;
     ListView listView;
     ActivityMainBinding binding;
     ArrayList<String> trackList;
@@ -97,7 +95,7 @@ public class PlaylistActivity extends AppCompatActivity {
 
         if (intent != null){
             String playlistId = intent.getStringExtra("playlistUrl");
-            urlFinal = ("https://yma-server.herokuapp.com/playlist/"+playlistId);
+            urlFinal = ("https://yma-server.herokuapp.com/album/"+playlistId);
         }
         setupBottomNavigation();
     }
@@ -119,8 +117,8 @@ public class PlaylistActivity extends AppCompatActivity {
         listView.setClickable(true);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
-            public void onItemClick(AdapterView<?> parent,View view, int position, long id){
-                Intent i = new Intent(PlaylistActivity.this, MainActivity.class);
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+                Intent i = new Intent(AlbumActivity.this, MainActivity.class);
                 i.putExtra("track", trackList.get(position));
                 i.putExtra("artist", artistName.get(position));
                 i.putExtra("thumbnail", thumbnailUrl.get(position));
@@ -181,8 +179,8 @@ public class PlaylistActivity extends AppCompatActivity {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     if(i==0){
-                                        AlertDialog.Builder createBuilder = new AlertDialog.Builder(PlaylistActivity.this);
-                                        LayoutInflater inflater = PlaylistActivity.this.getLayoutInflater();
+                                        AlertDialog.Builder createBuilder = new AlertDialog.Builder(AlbumActivity.this);
+                                        LayoutInflater inflater = AlbumActivity.this.getLayoutInflater();
                                         createBuilder.setView(inflater.inflate(R.layout.create_playlist,null)).setPositiveButton("Create and add", new DialogInterface.OnClickListener() {
 
                                             @Override
@@ -206,7 +204,7 @@ public class PlaylistActivity extends AppCompatActivity {
                                                     initializer.put("init","init");
                                                     db.collection("users").document(userEmail).collection("playlists").document(titlePlaylist).set(initializer);
                                                     db.collection("users").document(userEmail).collection("playlists").document(titlePlaylist).collection("songs").document(songTitle).set(song);
-                                                    Toast.makeText(PlaylistActivity.this, "Added to playlist", Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(AlbumActivity.this, "Added to playlist", Toast.LENGTH_SHORT).show();
                                                 }
                                             }
                                         }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -226,7 +224,7 @@ public class PlaylistActivity extends AppCompatActivity {
                                         song.put("thumbnailUrl", songThumbnail);
                                         song.put("timestamp", new Timestamp(new Date()));
                                         db.collection("users").document(userEmail).collection("playlists").document(playlistDialogFinal[i].toString()).collection("songs").document(songTitle).set(song);
-                                        Toast.makeText(PlaylistActivity.this, "Added to playlist", Toast.LENGTH_SHORT).show();                                    }
+                                        Toast.makeText(AlbumActivity.this, "Added to playlist", Toast.LENGTH_SHORT).show();                                    }
                                 }
                             });
                             myDialog=myBuilder.create();
@@ -495,7 +493,7 @@ public class PlaylistActivity extends AppCompatActivity {
                             "Feeding unicorns...");
                     Random rand = new Random();
                     String randomElement = list.get(rand.nextInt(list.size()));
-                    progressDialog = new ProgressDialog(PlaylistActivity.this);
+                    progressDialog = new ProgressDialog(AlbumActivity.this);
                     progressDialog.setMessage(randomElement);
                     progressDialog.setCancelable(false);
                     progressDialog.show();
@@ -515,10 +513,8 @@ public class PlaylistActivity extends AppCompatActivity {
 
                 if (!data.isEmpty()) {
                     JSONObject jsonObject = new JSONObject(data);
-                    //String desc = jsonObject.getString("description");
-                    JSONObject playListTitleLong = jsonObject.getJSONObject("title");
-                    //JSONObject dataLong = jsonObject.getJSONObject("content");
-                    JSONArray data = jsonObject.getJSONArray("content");
+                    String playListTitle = jsonObject.getString("title");
+                    JSONArray data = jsonObject.getJSONArray("tracks");
 
                     trackList.clear();
                     songId.clear();
@@ -530,21 +526,17 @@ public class PlaylistActivity extends AppCompatActivity {
                     for (int i =0; i< data.length(); i++){
 
                         JSONObject dataFinal = data.getJSONObject(i);
-                        JSONObject tracks = dataFinal.getJSONObject("title");
-                        String trackName = tracks.getString("text");
-                        String id = dataFinal.getString("id");
-                        JSONArray author = dataFinal.getJSONArray("author");
+                        String trackName = dataFinal.getString("name");
+                        String id = dataFinal.getString("videoId");
+                        JSONArray author = jsonObject.getJSONArray("artist");
                         JSONObject authorObject = author.getJSONObject(0);
-                        String name = authorObject.getString("text");
-                        String playListTitle = playListTitleLong.getString("text");
-                        JSONArray thumbnailArray = jsonObject.getJSONArray("thumbnail");
+                        String name = authorObject.getString("name");
+
+                        JSONArray thumbnailArray = jsonObject.getJSONArray("thumbnails");
                         JSONObject thumbnailObject = thumbnailArray.getJSONObject(0);
                         String thumbnail = thumbnailObject.getString("url");
                         String thumbnailFinal = UrlClean.url(thumbnail);
-                        JSONArray songThumb = dataFinal.getJSONArray("thumbnail");
-                        JSONObject songThumbnail = songThumb.getJSONObject(0);
-                        String songThumbnailUrl = songThumbnail.getString("url");
-                        String songThumbnailFinal = UrlClean.url(songThumbnailUrl);
+                        String songThumbnailFinal = "https://www.freepnglogos.com/uploads/play-button-png/index-media-cover-art-play-button-overlay-5.png";
                         trackList.add(trackName);
                         songId.add(id);
                         artistName.add(name);
@@ -593,7 +585,7 @@ public class PlaylistActivity extends AppCompatActivity {
     private void setupBottomNavigation(){
         BottomNavigationViewEx bottomNavigationViewEx = (BottomNavigationViewEx) findViewById(R.id.bottomNavViewBar);
         BottomNavigationHelper.setupBottomNavigationView(bottomNavigationViewEx);
-        BottomNavigationHelper.enableNavigation(PlaylistActivity.this,bottomNavigationViewEx);
+        BottomNavigationHelper.enableNavigation(AlbumActivity.this,bottomNavigationViewEx);
 
         Menu menu = bottomNavigationViewEx.getMenu();
         MenuItem menuItem = menu.getItem(0);

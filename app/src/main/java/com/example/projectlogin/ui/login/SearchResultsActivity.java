@@ -168,7 +168,17 @@ protected void onCreate(Bundle savedInstanceState) {
 
                 listAdapter2 = new ListAdapterAlbum(this,albumArrayList);
                 albumListView.setAdapter(listAdapter2);
-                albumListView.setClickable(false);
+                albumListView.setClickable(true);
+                albumListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                String albumUrl = PlaylistUrlClean.url(albumId.get(i));
+                                Log.d("URLPLAYLIST", albumUrl);
+                                Intent intent = new Intent(SearchResultsActivity.this,AlbumActivity.class);
+                                intent.putExtra("playlistUrl",albumUrl);
+                                startActivity(intent);
+                        }
+                });
         }
 
         AlertDialog myDialog;
