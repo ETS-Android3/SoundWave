@@ -21,6 +21,6 @@
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
         android:layout_marginBottom="4dp"
-        android:hint="Playlsit Name" />
+        android:hint="Playlist Name" />
 
 </LinearLayout>
